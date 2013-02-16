@@ -1,4 +1,30 @@
 
+           
+           /*
+           *** -----------------------------------------------------
+           CSS FIX FOR OTHER PLUGINS METABOX PROBLEMS...    2/13/2013
+           *** -----------------------------------------------------
+           Some plugins insert global metaboxes which conflict with this plugin
+           
+           remove them by shutting off .postbox,
+           then allowing *this plugin's* specific meta boxes to display only.
+           
+           (id selector takes precedence over the class selector.)           
+           */
+            .postbox {display:none;}
+            
+            div#vtmin-pop-in-select,
+            div#vtmin-pop-in-specifics,
+            div#vtmin-rule-amount,
+            div#vtmin-rule-msg,
+            div#vtmin-rule-id,
+            div#vtmin-rule-resources,
+            div#vtmin-errmsg,
+            div#submitdiv 
+            {display:block;}
+            /* end fix */
+
+
             div#vtmin-pop-in-select.postbox,
             div#vtmin-pop-out-select.postbox,
             div#vtmin-pop-in-specifics.postbox,

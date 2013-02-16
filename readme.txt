@@ -3,8 +3,8 @@ Contributors: vark
 Donate link: http://www.varktech.com/woocommerce/minimum-purchase-for-woocommerce/
 Tags: e-commerce, WooCommerce, shop, store, admin, price, pricing, minimum, purchase, limits, checkout
 Requires at least: 3.3
-Tested up to: 3.5
-Stable tag: 1.0
+Tested up to: 3.5.1
+Stable tag: 1.05
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -140,6 +140,11 @@ Please review the following printed and video documentation.
 
 
 == Changelog ==
+
+= 1.05 - 2013-02-13 =
+* Bug Fix - Rule Add screen was being overwritten by some other plugins' global metaboxes - thanks to Dagofee for debug help
+* Bug Fix - PHP version check not being executed correctly on activation hook (minimum PHP version 5 required)
+* Bug Fix - Nuke and Repair buttons on Options screen were also affecting main Options settings, now fixed
 
 = 1.0 -2013-01-15 =
 * Initial Public Release

@@ -174,6 +174,28 @@ function vtmin_setup_options_cntl() {
   
   </script>
   
+ 
+  <?php
+  //fix 2-13-2013 - protect buttons not available in free version
+  if(!defined('VTMIN_PRO_DIRNAME')) { 
+  ?>
+      <style type="text/css">
+           #show_prodcat,
+           #show_rulecat
+           {color:#aaa;}  /*grey out unavailable choices*/
+      </style>
+      <script type="text/javascript">
+          jQuery.noConflict();
+          jQuery(document).ready(function($) {                                                        
+            // To disable 
+            //  $('.someElement').attr('disabled', 'disabled');  
+            $('#show_prodcat').attr('disabled', 'disabled');
+            $('#show_rulecat').attr('disabled', 'disabled');
+          }); //end ready function 
+      </script> 
+  <?php
+  }//end Fix
+  ?>  
   
 	<div class="wrap">
 		<div id="icon-themes" class="icon32"></div>
@@ -211,7 +233,7 @@ function vtmin_setup_options_cntl() {
         <h3><?php esc_attr_e('Minimum Purchase Rules Repair and Delete Buttons', 'vtmin'); ?></h3> 
         <h4><?php esc_attr_e('Repair reknits the Rules Custom Post Type with the Minimum Purchase rules option array, if out of sync.', 'vtmin'); ?></h4>        
         <input id="repair-button"       name="vtmin_setup_options[rules-repair]"  type="submit" class="button-fourth"     value="<?php esc_attr_e('Repair Rules Structures', 'vtmin'); ?>" /> 
-        <h4><?php esc_attr_e('Nuke Rules deletes all Minimum Purchase Rules, Setup Options.  Hit "Reset Options" to create new options.', 'vtmin'); ?></h4>
+        <h4><?php esc_attr_e('Nuke Rules deletes all Minimum Purchase Rules.', 'vtmin'); ?></h4>
         <input id="nuke-rules-button"   name="vtmin_setup_options[rules-nuke]"     type="submit" class="button-third"      value="<?php esc_attr_e('Nuke all Rules', 'vtmin'); ?>" />
         <h4><?php esc_attr_e('Nuke Rule Cats deletes all Minimum Purchase Rule Categories', 'vtmin'); ?></h4>
         <input id="nuke-cats-button"    name="vtmin_setup_options[cats-nuke]"      type="submit" class="button-fifth"      value="<?php esc_attr_e('Nuke all Rule Cats', 'vtmin'); ?>" />
@@ -602,7 +624,8 @@ function vtmin_rulecat_names_callback () {    //opt5
 
 function vtmin_debugging_mode_callback () {    //opt8
 	$options = get_option( 'vtmin_setup_options' );	
-	$html = '<select id="show_rulecat" name="vtmin_setup_options[debugging_mode_on]">';
+	// //fix 2-13-2013 - fix to ID name
+  $html = '<select id="debugging-mode" name="vtmin_setup_options[debugging_mode_on]">';
 	$html .= '<option value="yes"' . selected( $options['debugging_mode_on'], 'yes', false) . '>Yes &nbsp;</option>';
 	$html .= '<option value="no"'  . selected( $options['debugging_mode_on'], 'no', false) . '>No &nbsp;</option>';
 	$html .= '</select>';
@@ -804,14 +827,17 @@ function vtmin_validate_setup_input( $input ) {
     case $repair       === true :    //repair rules
         $vtmin_nuke = new VTMIN_Rule_delete;            
         $vtmin_nuke->vtmin_repair_all_rules();
+        $output = get_option( 'vtmin_setup_options' );  //fix 2-13-2013 - initialize output, otherwise all Options go away...
       break;
     case $nuke_rules   === true :
         $vtmin_nuke = new VTMIN_Rule_delete;            
         $vtmin_nuke->vtmin_nuke_all_rules();
+        $output = get_option( 'vtmin_setup_options' );  //fix 2-13-2013 - initialize output, otherwise all Options go away...
       break;
     case $nuke_cats    === true :    
         $vtmin_nuke = new VTMIN_Rule_delete;            
         $vtmin_nuke->vtmin_nuke_all_rule_cats();
+        $output = get_option( 'vtmin_setup_options' );  //fix 2-13-2013 - initialize output, otherwise all Options go away...
       break;
     default:                    //update options
         $output = array();

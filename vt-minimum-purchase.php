@@ -3,13 +3,18 @@
 Plugin Name: VarkTech Minimum Purchase for WooCommerce
 Plugin URI: http://varktech.com
 Description: An e-commerce add-on for WooCommerce, supplying minimum purchase functionality.
-Version: 1.0
+Version: 1.05
 Author: Vark
 Author URI: http://varktech.com
 */
 
 /*
 == Changelog ==
+
+= 1.05 - 2013-02-13 =
+* Bug Fix - Rule Add screen was being overwritten by some other plugins' global metaboxes - thanks to Dagofee for debug help
+* Bug Fix - PHP version check not being executed correctly on activation hook (minimum PHP version 5 required)
+* Bug Fix - Nuke and Repair buttons on Options screen were also affecting main Options settings, now fixed
  
 = 1.0  - 2013-01-15 =
 * Initial Public Release
@@ -31,8 +36,8 @@ class VTMIN_Controller{
 	
 	public function __construct(){    
    
-		define('VTMIN_VERSION',                               '1.0');
-    define('VTMIN_LAST_UPDATE_DATE',                      '2013-01-15');
+		define('VTMIN_VERSION',                               '1.05');
+    define('VTMIN_LAST_UPDATE_DATE',                      '2013-02-13');
     define('VTMIN_DIRNAME',                               ( dirname( __FILE__ ) ));
     define('VTMIN_URL',                                   plugins_url( '', __FILE__ ) );
     define('VTMIN_EARLIEST_ALLOWED_WP_VERSION',           '3.3');   //To pick up wp_get_object_terms fix, which is required for vtmin-parent-functions.php
@@ -72,9 +77,7 @@ class VTMIN_Controller{
     require ( VTMIN_DIRNAME . '/woo-integration/vtmin-parent-cart-validation.php');
     
     if (is_admin()){
-        register_activation_hook(__FILE__, array( $this, 'vtmin_activation_hook'));   
-        register_uninstall_hook (__FILE__, array(&$this, 'vtmin_uninstall_hook'));
-        
+        //fix 02-132013 - register_activation_hook now at bottom of file, after class instantiates
         require ( VTMIN_DIRNAME . '/admin/vtmin-setup-options.php');
         
         if(defined('VTMIN_PRO_DIRNAME')) {
@@ -268,26 +271,30 @@ class VTMIN_Controller{
 			return;
 		}
     
-		if((float)phpversion() < 5){
-			// delete_option('vtmin_setup_options');
-			 wp_die( __('<strong>Looks like you\'re running an older version of PHP, you need to be running at least PHP 5 to use the Varktech Minimum Purchase plugin.  Contact your host to upgrade to PHP 5.</strong>', 'vtmin'), __('VT Minimum Purchase not compatible - PHP', 'vtmin'), array('back_link' => true));
-			return;
+    //fix 2-13-2013 - changed php version_compare, altered error msg   
+   if (version_compare(PHP_VERSION, VTMIN_EARLIEST_ALLOWED_PHP_VERSION) < 0) {    //'<0' = 1st value is lower 
+			wp_die( __('<strong><em>PLUGIN CANNOT ACTIVATE &nbsp;&nbsp;-&nbsp;&nbsp;     Varktech Minimum Purchase </em>
+      <br><br>&nbsp;&nbsp;&nbsp;&nbsp;   Your installation is running on an older version of PHP 
+      <br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   - your PHP version = ', 'vtmin') .PHP_VERSION. __(' . 
+      <br><br>&nbsp;&nbsp;&nbsp;&nbsp;   You need to be running **at least PHP version 5** to use this plugin.  
+      <br><br>&nbsp;&nbsp;&nbsp;&nbsp;   Please contact your host and request an upgrade to PHP 5+ . 
+      <br><br>&nbsp;&nbsp;&nbsp;&nbsp;   Then activate this plugin following the upgrade.</strong>', 'vtmin'), __('VT Min and Max Purchase not compatible - PHP', 'vtmin'), array('back_link' => true));
+			return; 
 		}
     
-    if(defined('WPSC_VERSION') && (VTMIN_PARENT_PLUGIN_NAME == 'WooCommerce') ) { 
+    if(defined('WPSC_VERSION') && (VTMIN_PARENT_PLUGIN_NAME == 'WP E-Commerce') ) { 
       $new_version =      VTMIN_EARLIEST_ALLOWED_PARENT_VERSION;
       $current_version =  WPSC_VERSION;
       if( (version_compare(strval($new_version), strval($current_version), '>') == 1) ) {   //'==1' = 2nd value is lower 
   			// delete_option('vtmin_setup_options');
-  			 wp_die( __('<strong>Looks like you\'re running an older version of WooCommerce. <br>You need to be running at least ** WooCommerce 3.8 **, to use the Varktech Minimum Purchase plugin.</strong>', 'vtmin'), __('VT Minimum Purchase not compatible - WPEC', 'vtmin'), array('back_link' => true));
+  			 wp_die( __('<strong>Looks like you\'re running an older version of WP E-Commerce. <br>You need to be running at least ** WP E-Commerce 3.8 **, to use the Varktech Minimum Purchase plugin.</strong>', 'vtmin'), __('VT Minimum Purchase not compatible - WPEC', 'vtmin'), array('back_link' => true));
   			return;
   		}
     }  else 
-    if (VTMIN_PARENT_PLUGIN_NAME == 'WooCommerce') {
-        wp_die( __('<strong>Varktech Minimum Purchase for WooCommerce requires that WooCommerce be installed and activated.</strong>', 'vtmin'), __('WooCommerce not installed or activated', 'vtmin'), array('back_link' => true));
+    if (VTMIN_PARENT_PLUGIN_NAME == 'WP E-Commerce') {
+        wp_die( __('<strong>Varktech Minimum Purchase for WP E-Commerce requires that WP E-Commerce be installed and activated.</strong>', 'vtmin'), __('WP E-Commerce not installed or activated', 'vtmin'), array('back_link' => true));
   			return;
     }
-    
 
     if(defined('WOOCOMMERCE_VERSION') && (VTMIN_PARENT_PLUGIN_NAME == 'WooCommerce')) { 
       $new_version =      VTMIN_EARLIEST_ALLOWED_PARENT_VERSION;
@@ -339,3 +346,12 @@ class VTMIN_Controller{
   
 } //end class
 $vtmin_controller = new VTMIN_Controller;
+
+  //***************************************************************************************
+  //fix 2-13-2013  -  problems with activation hook and class, solved herewith...
+  //   FROM http://website-in-a-weekend.net/tag/register_activation_hook/
+  //***************************************************************************************
+  if (is_admin()){ 
+        register_activation_hook(__FILE__, array($vtmin_controller, 'vtmin_activation_hook'));
+        register_activation_hook(__FILE__, array($vtmin_controller, 'vtmin_uninstall_hook'));                                   
+  }
