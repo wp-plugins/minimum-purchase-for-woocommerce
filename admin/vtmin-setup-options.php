@@ -29,16 +29,15 @@ function vtmin_add_admin_menu_setup_items() {
 	);
   
  if(!defined('VTMIN_PRO_DIRNAME')) {  //update to pro version...
-   add_submenu_page(
-		'edit.php?post_type=vtmin-rule',	// The ID of the top-level menu page to which this submenu item belongs
-		__( 'Upgrade to Minimum Purchase Pro', 'vtmin' ), // The value used to populate the browser's title bar when the menu page is active                           
-		__( 'Upgrade to Pro', 'vtmin' ),					// The label of this submenu item displayed in the menu
-		'administrator',					// What roles are able to access this submenu item
-		'vtmin_pro_upgrade',	// The slug used to represent this submenu item
-		array( &$this, 'vtmin_pro_upgrade_cntl' ) 				// The callback function used to render the options for this submenu item
-	);
- 
- } 
+       add_submenu_page(
+    		'edit.php?post_type=vtmin-rule',	// The ID of the top-level menu page to which this submenu item belongs
+    		__( 'Upgrade to Minimum Purchase Pro', 'vtmin' ), // The value used to populate the browser's title bar when the menu page is active                           
+    		__( 'Upgrade to Pro', 'vtmin' ),					// The label of this submenu item displayed in the menu
+    		'administrator',					// What roles are able to access this submenu item
+    		'vtmin_pro_upgrade',	// The slug used to represent this submenu item
+    		array( &$this, 'vtmin_pro_upgrade_cntl' ) 				// The callback function used to render the options for this submenu item
+    	);
+  } 
   
 } 
 
@@ -74,10 +73,11 @@ function vtmin_pro_upgrade_cntl() {
         <ul>
           <li><?php _e('the entire contents of the cart.', 'vtmin') ?></li>
           <li><?php _e('an individual product.', 'vtmin') ?></li>
-          <li><?php _e('the variations for an individual product.', 'vtmax') ?></li>
+          <li><?php _e('the variations for an individual product.', 'vtmin') ?></li>
           <li><?php _e('those products in a particular Product category or group of categories.', 'vtmin') ?></li>
           <li><?php _e('those products in a particular Minumum Purchase category or group of categories. (particularly useful if you need to define a group outside of existing Product Categories)', 'vtmin') ?></li>
           <li><?php _e('Membership Status, inclusive or exclusive of category participation.', 'vtmin') ?></li>
+          <li><?php _e('<em>Set cumulative lifetime limits on rule purchases by customer.</em>', 'vtmin') ?></li>
         </ul>
         <a  href=" <?php echo VTMIN_PURCHASE_PRO_VERSION_BY_PARENT ; ?> "  title="Access Plugin Documentation"> Upgrade to Minimum Purchase Pro</a>                  
     </div>  
@@ -117,8 +117,8 @@ function vtmin_setup_options_cntl() {
        h4 {font-style:italic;}
       .form-table, h4 {margin-left:30px;font-size:14px;}
       .form-table td p {width: 95%;}
-      #nuke-rules-button, #nuke-cats-button, #repair-button {color:red; margin-left:30px}
-      #nuke-rules-button:hover, #nuke-cats-button:hover, #repair-button:hover {cursor:hand; cursor:pointer; font-weight:bold;}
+      #nuke-rules-button, #nuke-cats-button, #nuke-hist-button, #repair-button {color:red; margin-left:30px}
+      #nuke-rules-button:hover, #nuke-cats-button:hover, #nuke-hist-button:hover, #repair-button:hover {cursor:hand; cursor:pointer; font-weight:bold;}
       
       #system-info-title {float:left; margin-top:70px;}
       .system-info-subtitle {clear:left;float:left;}
@@ -169,33 +169,58 @@ function vtmin_setup_options_cntl() {
           });
           $("#help12").click(function(){
               $("#help12-text").toggle("slow");                           
-          });      
+          });
+          $("#help13").click(function(){
+              $("#help13-text").toggle("slow");                           
+          });
+          $("#help14").click(function(){
+              $("#help14-text").toggle("slow");                           
+          });
+          $("#help15").click(function(){
+              $("#help15-text").toggle("slow");                           
+          });
+          $("#help16").click(function(){
+              $("#help16-text").toggle("slow");                           
+          });
+          $("#help17").click(function(){
+              $("#help17-text").toggle("slow");                           
+          });
+          $("#help18").click(function(){
+              $("#help18-text").toggle("slow");                           
+          });
+          $("#help19").click(function(){
+              $("#help19-text").toggle("slow");                           
+          });
+          $("#help20").click(function(){
+              $("#help20-text").toggle("slow");                           
+          });
+                
       });  
   
   </script>
   
- 
   <?php
-  //fix 2-13-2013 - protect buttons not available in free version
-  if(!defined('VTMIN_PRO_DIRNAME')) { 
-  ?>
-      <style type="text/css">
-           #show_prodcat,
-           #show_rulecat
-           {color:#aaa;}  /*grey out unavailable choices*/
-      </style>
-      <script type="text/javascript">
-          jQuery.noConflict();
-          jQuery(document).ready(function($) {                                                        
-            // To disable 
-            //  $('.someElement').attr('disabled', 'disabled');  
-            $('#show_prodcat').attr('disabled', 'disabled');
-            $('#show_rulecat').attr('disabled', 'disabled');
-          }); //end ready function 
-      </script> 
-  <?php
-  }//end Fix
-  ?>  
+  if(!defined('VTMIN_PRO_DIRNAME')) {  
+        // **********************************************
+      // also disable and grey out options on free version
+      // **********************************************
+        ?>
+        <style type="text/css">
+             #show_prodcat,
+             #show_rulecat
+             {color:#aaa;}  /*grey out unavailable choices*/
+        </style>
+        <script type="text/javascript">
+            jQuery.noConflict();
+            jQuery(document).ready(function($) {                                                        
+              // To disable 
+              //  $('.someElement').attr('disabled', 'disabled');  
+              $('#show_prodcat').attr('disabled', 'disabled');
+              $('#show_rulecat').attr('disabled', 'disabled');
+
+            }); //end ready function 
+        </script>
+  <?php } ?>
   
 	<div class="wrap">
 		<div id="icon-themes" class="icon32"></div>
@@ -267,7 +292,7 @@ function vtmin_setup_options_cntl() {
        <span class="system-info-line"><span class="system-info-label">PARENT_PLUGIN_NAME: </span> <span class="system-info-data"><?php echo VTMIN_PARENT_PLUGIN_NAME;  ?></span> </span>
        <span class="system-info-line"><span class="system-info-label">EARLIEST_ALLOWED_PARENT_VERSION: </span> <span class="system-info-data"><?php echo VTMIN_EARLIEST_ALLOWED_PARENT_VERSION;  ?></span></span>
        
-       <?php if(defined('WPSC_VERSION')        && (VTMIN_PARENT_PLUGIN_NAME == 'WooCommerce') ) { ?>
+       <?php if(defined('WPSC_VERSION')        && (VTMIN_PARENT_PLUGIN_NAME == 'WP E-Commerce') ) { ?>
        <span class="system-info-line"><span class="system-info-label">PARENT_VERSION (WPSC): </span> <span class="system-info-data"><?php echo WPSC_VERSION;  ?></span></span>
        <?php } ?>
        
@@ -305,10 +330,10 @@ function vtmin_setup_options_cntl() {
      <h4 class="system-info-subtitle">Debug Info</h4>
       <span class="system-info">                  
        <span class="system-info-line"><span class="system-info-label">PHP VERSION: </span> <span class="system-info-data"><?php echo phpversion(); ?></span> </span>
-       <span class="system-info-line"><span class="system-info-label">SYSTEM MEMORY: </span> <span class="system-info-data"><?php echo '<pre>'.print_r( $your_system_info , true).'</pre>' ;  ?></span> </span>
-     </span> 
-     <?php   }  ?>
-  
+       <span class="system-info-line"><span class="system-info-label">SYSTEM MEMORY: </span> <span class="system-info-data"><?php echo '<pre>'.print_r( $your_system_info , true).'</pre>' ;  ?></span> </span>    
+       <span class="system-info-line"><span class="system-info-label">Setup Options: </span> <span class="system-info-data"><?php echo '<pre>'.print_r( $vtmin_setup_options , true).'</pre>' ;  ?></span> </span> 
+     </span>
+     <?php   }    ?>
 	</div><!-- /.wrap -->
 
 <?php
@@ -356,49 +381,49 @@ function vtmin_initialize_options() {
 		array(								// The array of arguments to pass to the callback. In this case, just a description.
 			 __( 'Error messages can be shown in table formats.', 'vtmin' )
 		)
-	);
+	);                                                        
 	// show error msg = yes/no
 	add_settings_field(	           //opt2
 		'show_error_before_checkout_products',						// ID used to identify the field throughout the theme
-		__( 'Show Error Messages on Cart Page', 'vtmin' ),							// The label to the left of the option interface element    
+		__( 'Show Error Messages Just Before Checkout Products List', 'vtmin' ),							// The label to the left of the option interface element    
 		array(&$this, 'vtmin_before_checkout_products_callback'), // The name of the function responsible for rendering the option interface
 		'vtmin_setup_options_page',	// The page on which this option will be displayed
 		'general_settings_section',			// The name of the section to which this field belongs
 		array(								// The array of arguments to pass to the callback. In this case, just a description.
-			__( 'Error messages are shown on both cart and checkout pages by default.', 'vtmin' )
+			__( 'Error messages are shown in one place at checkout by default.', 'vtmin' )
 		)
 	);
        // customize error selector 1
     add_settings_field(	         //opt11
 		'show_error_before_checkout_products_selector',						// ID used to identify the field throughout the theme
-		__( 'Show Error Messages On Cart Page - HTML Selector <em>(see => "more info")</em>', 'vtmin' ),							// The label to the left of the option interface element
+		__( 'Show Error Messages Just Before Checkout Products List - HTML Selector <em>(see => "more info")</em>', 'vtmin' ),							// The label to the left of the option interface element
 		array(&$this, 'vtmin_before_checkout_products_selector_callback'), // The name of the function responsible for rendering the option interface
 		'vtmin_setup_options_page',	// The page on which this option will be displayed
 		'general_settings_section',			// The name of the section to which this field belongs
 		array(								// The array of arguments to pass to the callback. In this case, just a description.
-			__( 'For the Cart Page, Supplies the ID or Class HTML selector this message appears before', 'vtmin' )
+			__( 'For the Product area, Supplies the ID or Class HTML selector this message appears before', 'vtmin' )
 		)
 	);
   	// show error msg = yes/no
     add_settings_field(	         //opt3
 		'show_error_before_checkout_address',						// ID used to identify the field throughout the theme
-		__( 'Show Error Messages on Checkout Page', 'vtmin' ),							// The label to the left of the option interface element
+		__( 'Show 2nd Set of Error Messages at Checkout Address Area', 'vtmin' ),							// The label to the left of the option interface element
 		array(&$this, 'vtmin_before_checkout_address_callback'), // The name of the function responsible for rendering the option interface
 		'vtmin_setup_options_page',	// The page on which this option will be displayed
 		'general_settings_section',			// The name of the section to which this field belongs
 		array(								// The array of arguments to pass to the callback. In this case, just a description.
-			 __( 'Error messages are shown on both cart and checkout pages by default.', 'vtmin' )
+			 __( 'Error messages are shown in one place at checkout by default.', 'vtmin' )
 		)
 	);
          // customize error selector 2
     add_settings_field(	         //opt12
 		'show_error_before_checkout_address_selector',						// ID used to identify the field throughout the theme
-		__( 'Show Error Messages on Checkout Page - HTML Selector <em>(see => "more info")</em>', 'vtmin' ),							// The label to the left of the option interface element
+		__( 'Show Error Messages Just Before Checkout Address List - HTML Selector <em>(see => "more info")</em>', 'vtmin' ),							// The label to the left of the option interface element
 		array(&$this, 'vtmin_before_checkout_address_selector_callback'), // The name of the function responsible for rendering the option interface
 		'vtmin_setup_options_page',	// The page on which this option will be displayed
 		'general_settings_section',			// The name of the section to which this field belongs
 		array(								// The array of arguments to pass to the callback. In this case, just a description.
-			__( 'For the Checkout Page, Supplies the ID or Class HTML selector this message appears before', 'vtmin' )
+			__( 'For the Address area, Supplies the ID or Class HTML selector this message appears before', 'vtmin' )
 		)
 	);
     	// show vtmin ID = yes/no
@@ -482,7 +507,10 @@ function vtmin_initialize_options() {
 			 __( 'Do we apply multiple rules to a given product?', 'vtmin' )
 		)
 	);                
-    
+ 
+ 
+ 
+
   //****************************
   //  SYSTEM AND DEBUG OPTIONS Area
   //****************************
@@ -534,15 +562,22 @@ function vtmin_get_default_options() {
           'custom_error_msg_css_at_checkout'  => '',  //opt9
           'show_rule_ID_in_errmsg' => 'yes',  //opt10
           'show_error_before_checkout_products_selector' => VTMIN_CHECKOUT_PRODUCTS_SELECTOR_BY_PARENT,  //opt11
-          'show_error_before_checkout_address_selector'  => VTMIN_CHECKOUT_ADDRESS_SELECTOR_BY_PARENT  //opt12          
-           
+          'show_error_before_checkout_address_selector'  => VTMIN_CHECKOUT_ADDRESS_SELECTOR_BY_PARENT  //opt12
      );
      return $options;
 }
-
+   
 function vtmin_processing_options_callback () {
     ?>
     <h4><?php esc_attr_e('These options control rule error processing during checkout.', 'vtmin'); ?></h4>
+    <?php                                                                                                                                                                                      
+}
+   
+function vtmin_lifetime_rule_options_callback () {
+    ?>
+    <h4><?php esc_attr_e('Lifetime rule Options apply to Lifetime Customer Max Purchases. (Lifetime processing rules are available with the Pro version)', 'vtmin'); ?></h4>
+    <h4><?php esc_attr_e('These options control how comparisons are made, to see if a customer has purchased products associated with a given rule prior to the current purchase.', 'vtmin'); ?></h4>
+    
     <?php                                                                                                                                                                                      
 }
 
@@ -576,7 +611,7 @@ function vtmin_before_checkout_products_callback() {   //opt2
   $html .= '<a id="help2" class="help-anchor" href="javascript:void(0);" >' ;  $html .= $more_info;   $html .= '</a>';
   
   $html .= '<p id="help2-text" class = "help-text" >'; 
-  $help = __('"Show Error Messages on Cart Page" => Show error messages on the first of two checkout-related pages.', 'vtmin'); 
+  $help = __('"Show Error Messages Just Before Checkout Products List" => This is the standard place to show the error messages, just above the product list area.', 'vtmin'); 
   $html .= $help;
   $html .= '</p>';
     
@@ -594,7 +629,9 @@ function vtmin_before_checkout_address_callback() {    //opt3
   $html .= '<a id="help3" class="help-anchor" href="javascript:void(0);" >' ;  $html .= $more_info;   $html .= '</a>';
   
   $html .= '<p id="help3-text" class = "help-text" >'; 
-  $help = __('"Show Error Messages on Checkout Page" => Show error messages on the second of two checkout-related pages', 'vtmin'); 
+  $help = __('"Show Error Messages Just Before Checkout Address Area" => This is the second 
+  (duplicate) place to show error messages, just above the address area. It is particularly useful 
+  if your checkout has multiple panes or pages, rather than a single full-display screen', 'vtmin'); 
   $html .= $help;
   $html .= '</p>';
   	
@@ -624,8 +661,7 @@ function vtmin_rulecat_names_callback () {    //opt5
 
 function vtmin_debugging_mode_callback () {    //opt8
 	$options = get_option( 'vtmin_setup_options' );	
-	// //fix 2-13-2013 - fix to ID name
-  $html = '<select id="debugging-mode" name="vtmin_setup_options[debugging_mode_on]">';
+	$html = '<select id="debugging-mode" name="vtmin_setup_options[debugging_mode_on]">';
 	$html .= '<option value="yes"' . selected( $options['debugging_mode_on'], 'yes', false) . '>Yes &nbsp;</option>';
 	$html .= '<option value="no"'  . selected( $options['debugging_mode_on'], 'no', false) . '>No &nbsp;</option>';
 	$html .= '</select>';
@@ -635,7 +671,10 @@ function vtmin_debugging_mode_callback () {    //opt8
   
   $html .= '<p id="help8-text" class = "help-text" >'; 
   $help = __('"Test Debugging Mode Turned On" => 
-  Set this to "yes" if you want to see the full rule structures which produce any error messages. **ONLY** should be used during testing.', 'vtmin'); 
+  Set this to "yes" if you want to see the full rule structures which produce any error messages. **ONLY** should be used during testing.
+  <br><br>NB => IF this switch is SET and the "purchase" button is depressed, the following warning may result:
+  <br> "Warning: Cannot modify header information - headers already sent by" ... You will still have debug info available, however.
+  ', 'vtmin'); 
   $html .= $help;
   $html .= '</p>';  
   
@@ -703,7 +742,7 @@ function vtmin_error_in_table_format_callback() {   //opt1
 
 function vtmin_currency_sign_callback() {    //opt6
   $options = get_option( 'vtmin_setup_options' );
-  $html = '<select id="currency_sign" name="vtmax_setup_options[use_this_currency_sign]">';
+  $html = '<select id="currency_sign" name="vtmin_setup_options[use_this_currency_sign]">';
 	$html .= '<option value="USD"' .  selected( $options['use_this_currency_sign'], 'USD', false) . '>$ &nbsp;&nbsp;(Dollar Sign) &nbsp;</option>';
   $html .= '<option value="EUR"' .  selected( $options['use_this_currency_sign'], 'EUR', false) . '>&euro; &nbsp;&nbsp;(Euro) &nbsp;</option>';
   $html .= '<option value="GBP"' .  selected( $options['use_this_currency_sign'], 'GBP', false) . '>&pound; &nbsp;&nbsp;(Pound Sterling) &nbsp;</option>';
@@ -724,7 +763,7 @@ function vtmin_currency_sign_callback() {    //opt6
   $html .= '<option value="ZAR"' .  selected( $options['use_this_currency_sign'], 'ZAR', false) . '>&#82; &nbsp;&nbsp;(South African Rand) &nbsp;</option>';
   $html .= '<option value="RON"' .  selected( $options['use_this_currency_sign'], 'RON', false) . '>lei &nbsp;&nbsp;(Romanian Leu) &nbsp;</option>';
 	$html .= '</select>';
-
+  
   $more_info = __('More Info', 'vtmin');
   $html .= '<a id="help6" class="help-anchor" href="javascript:void(0);" >' ;  $html .= $more_info;   $html .= '</a>';
    
@@ -784,15 +823,14 @@ function vtmin_before_checkout_products_selector_callback() {    //opt11
   $html .= '<a id="help11" class="help-anchor" href="javascript:void(0);" >' ;  $html .= $more_info;   $html .= '</a>';
    
   $html .= '<p id="help11-text" class = "help-text" >'; 
-  $help = __('"Show Error Messages on Cart Page - HTML Selector" => 
-  <strong>This option controls the location of the message display, ***handle with care***.</strong>  For the Cart Page error message, this option supplies the ID  or Class HTML selector this message appears before.  This selector would appear in your theme"s checkout area,
+  $help = __('"Show Error Messages Just Before Checkout Products List - HTML Selector" => 
+  <strong>This option controls the location of the message display, ***handle with care***.</strong>  For the Product area error message, this option supplies the ID  or Class HTML selector this message appears before.  This selector would appear in your theme"s checkout area,
   just above the products display area.  Be sure to include the "." or "#" selector identifier before the selector name. Default = "' .VTMIN_CHECKOUT_PRODUCTS_SELECTOR_BY_PARENT . '".  If you"ve changed this value and can"t get it to work, you can use the "reset to defaults" button (just below the "save changes" button) to get the value back (snapshot your other settings first to help you quickly set the other settings back the way to what you had before.)', 'vtmin'); 
   $html .= $help;
   $html .= '</p>';  
   
 	echo $html;
 }
-
 
 function vtmin_before_checkout_address_selector_callback() {    //opt12
   $options = get_option( 'vtmin_setup_options' );
@@ -802,8 +840,8 @@ function vtmin_before_checkout_address_selector_callback() {    //opt12
   $html .= '<a id="help12" class="help-anchor" href="javascript:void(0);" >' ;  $html .= $more_info;   $html .= '</a>';
    
   $html .= '<p id="help12-text" class = "help-text" >'; 
-  $help = __('"Show Error Messages on Checkout Page - HTML Selector" => 
-  <strong>This option controls the location of the message display, ***handle with care***.</strong>  For the Checkout Page error message, this option supplies the ID  or Class HTML selector this message appears before.  This selector would appear in your theme"s checkout area,
+  $help = __('"Show Error Messages Just Before Checkout Address List - HTML Selector" => 
+  <strong>This option controls the location of the message display, ***handle with care***.</strong>  For the Product area error message, this option supplies the ID  or Class HTML selector this message appears before.  This selector would appear in your theme"s checkout area,
   just above the address display area.  Be sure to include the "." or "#" selector identifier before the selector name. Default = "' .VTMIN_CHECKOUT_ADDRESS_SELECTOR_BY_PARENT . '".  If you"ve changed this value and can"t get it to work, you can use the "reset to defaults" button (just below the "save changes" button) to get the value back (snapshot your other settings first to help you quickly set the other settings back the way to what you had before.)', 'vtmin'); 
   $html .= $help;
   $html .= '</p>';  
@@ -819,10 +857,14 @@ function vtmin_validate_setup_input( $input ) {
   $repair       = ( ! empty($input['rules-repair']) ? true : false );
   $nuke_rules   = ( ! empty($input['rules-nuke']) ? true : false );
   $nuke_cats    = ( ! empty($input['cats-nuke']) ? true : false );
+
+ 
   
   switch( true ) { 
     case $reset        === true :    //reset options
         $output = $this->vtmin_get_default_options();  //load up the defaults
+        //as default options are set, no further action, just return
+        return apply_filters( 'vtmin_validate_setup_input', $output, $input );
       break;
     case $repair       === true :    //repair rules
         $vtmin_nuke = new VTMIN_Rule_delete;            
@@ -839,15 +881,23 @@ function vtmin_validate_setup_input( $input ) {
         $vtmin_nuke->vtmin_nuke_all_rule_cats();
         $output = get_option( 'vtmin_setup_options' );  //fix 2-13-2013 - initialize output, otherwise all Options go away...
       break;
-    default:                    //update options
+    default:   //standard update button hit...                 
         $output = array();
       	foreach( $input as $key => $value ) {
       		if( isset( $input[$key] ) ) {
       			$output[$key] = strip_tags( stripslashes( $input[ $key ] ) );	
       		} // end if		
-      	} // end foreach
+      	} // end foreach        
       break;
   }
+   
+   /* alternative to add_settings_error
+        $message =  __('<strong>Please Download and/or Activate ' .$free_plugin_name.' (the Free version). </strong><br>It must be installed and active, before the Pro version can be activated.  The Free version can be downloaded from '  . $free_plugin_download , 'vtminpro');
+        $admin_notices = '<div id="message" class="error fade" style="background-color: #FFEBE8 !important;"><p>' . $message . ' </p></div>';
+        add_action( 'admin_notices', create_function( '', "echo '$admin_notices';" ) );
+   */
+  
+ 
   //NO Object-based code on the apply_filters statement needed or wanted!!!!!!!!!!!!!
   return apply_filters( 'vtmin_validate_setup_input', $output, $input );                       
 } 
