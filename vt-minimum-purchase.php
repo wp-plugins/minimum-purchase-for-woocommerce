@@ -3,13 +3,16 @@
 Plugin Name: VarkTech Minimum Purchase for WooCommerce
 Plugin URI: http://varktech.com
 Description: An e-commerce add-on for WooCommerce, supplying minimum purchase functionality.
-Version: 1.05
+Version: 1.06
 Author: Vark
 Author URI: http://varktech.com
 */
 
 /*
 == Changelog ==
+
+= 1.06 - 2013-02-23 =
+* Bug Fix - "unexpected T_CLASS" - File admin/vtmin-rules-ui.php was corrupted, but the corruption only showed up on some hosts (?!).  Huge thanks to Don for allowing full access to his installation to debug.   
 
 = 1.05 - 2013-02-13 =
 * Bug Fix - Rule Add screen was being overwritten by some other plugins' global metaboxes - thanks to Dagofee for debug help
@@ -36,8 +39,8 @@ class VTMIN_Controller{
 	
 	public function __construct(){    
    
-		define('VTMIN_VERSION',                               '1.05');
-    define('VTMIN_LAST_UPDATE_DATE',                      '2013-02-13');
+		define('VTMIN_VERSION',                               '1.06');
+    define('VTMIN_LAST_UPDATE_DATE',                      '2013-02-23');
     define('VTMIN_DIRNAME',                               ( dirname( __FILE__ ) ));
     define('VTMIN_URL',                                   plugins_url( '', __FILE__ ) );
     define('VTMIN_EARLIEST_ALLOWED_WP_VERSION',           '3.3');   //To pick up wp_get_object_terms fix, which is required for vtmin-parent-functions.php
