@@ -18,6 +18,8 @@ The Minimum Purchase plugin for WooCommerce gives you the ability to set up mini
 
 If a purchase in your store fails a minimum purchase rule, an error message appears at the top of the checkout page, identifying the error situation and rule requirements.  The customer must resolve the error, before the purchase can be completed.   
 
+Fully tested with WooCommerce 2.0 .
+
 
 = Introductory Video =
 [youtube http://www.youtube.com/watch?v=_2fyD57c9Zc]
@@ -142,7 +144,7 @@ Please review the following printed and video documentation.
 == Changelog ==
 
 = 1.06 - 2013-02-23 =
-* Bug Fix - "unexpected T_CLASS" - File admin/vtmin-rules-ui.php was corrupted, but the corruption only showed up on some hosts (?!).  Huge thanks to Don for allowing full access to his installation to debug.   
+* Bug Fix - "unexpected T_CLASS/T_PUBLIC" - File admin/vtmXX-rules-ui.php was corrupted, but the corruption only showed up on some hosts (?!).  Huge thanks to Don for allowing full access to his installation to debug.   
 
 = 1.05 - 2013-02-13 =
 * Bug Fix - Rule Add screen was being overwritten by some other plugins' global metaboxes - thanks to Dagofee for debug help
