@@ -3,7 +3,7 @@ Contributors: vark
 Donate link: http://www.varktech.com/woocommerce/minimum-purchase-for-woocommerce/
 Tags: e-commerce, WooCommerce, shop, store, admin, price, pricing, minimum, purchase, limits, checkout
 Requires at least: 3.3
-Tested up to: 3.5.1
+Tested up to: 3.9
 Stable tag: 1.06
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -33,7 +33,7 @@ Fully tested with WooCommerce 2.0 .
 
 = How does the rule choose to examine the cart? [Search Criteria]  =
 
-*   By Role/Membership for cart contents
+*   By Role/Membership for cart contents  (allows different pricing rules for customer types / logged-in role, such as wholesalers or preferred customers).
 
 
 = Role/Membership Info for Search Criteria =
