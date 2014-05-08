@@ -485,7 +485,7 @@ function vtmin_initialize_options() {
 		'vtmin_setup_options_page'		// Page on which to add this section of options
 	);
 	
-   
+ /*  
     add_settings_field(	         //opt6
 		'use_this_currency_sign',						// ID used to identify the field throughout the theme
 		__( 'Select a Currency Sign', 'vtmin' ),			// The label to the left of the option interface element
@@ -496,7 +496,7 @@ function vtmin_initialize_options() {
 			__( 'Select a Currency Sign.', 'vtmin' )
 		)
 	);    
-  
+ */ 
     add_settings_field(	        //opt7
 		'apply_multiple_rules_to_product',						// ID used to identify the field throughout the theme
 		__( 'Apply More Than 1 Rule to Each Product', 'vtmin' ),			// The label to the left of the option interface element
@@ -739,7 +739,7 @@ function vtmin_error_in_table_format_callback() {   //opt1
   
 	echo $html;
 }
-
+/*
 function vtmin_currency_sign_callback() {    //opt6
   $options = get_option( 'vtmin_setup_options' );
   $html = '<select id="currency_sign" name="vtmin_setup_options[use_this_currency_sign]">';
@@ -776,7 +776,7 @@ function vtmin_currency_sign_callback() {    //opt6
   
 	echo $html;
 }
-
+*/
 function vtmin_custom_error_msg_css_at_checkout_callback() {    //opt9
   $options = get_option( 'vtmin_setup_options' );
   $html = '<textarea type="text" id="custom_error_msg_css_at_checkout"  rows="200" cols="40" name="vtmin_setup_options[custom_error_msg_css_at_checkout]">' . $options['custom_error_msg_css_at_checkout'] . '</textarea>';

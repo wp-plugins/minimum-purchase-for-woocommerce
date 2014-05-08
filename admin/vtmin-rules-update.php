@@ -119,10 +119,11 @@ class VTMIN_Rule_update {
           
     if ($rules_set_found) {
       $rule_found = false;
-      for($i=0; $i < sizeof($vtmin_rules_set); $i++) { 
+      $sizeof_rules_set = sizeof($vtmin_rules_set);
+      for($i=0; $i < $sizeof_rules_set; $i++) { 
          if ($vtmin_rules_set[$i]->post_id == $post_id) {
             $vtmin_rules_set[$i] = $vtmin_rule;
-            $i =  sizeof($vtmin_rules_set);
+            $i =  $sizeof_rules_set;
             $rule_found = true; 
          }
       }

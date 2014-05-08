@@ -5,16 +5,8 @@ WPSC-specific functions
 Parent Plugin Integration
 */
 
-
-class VTMIN_Parent_Functions {
-	
-	public function __construct(){
-    
- 
-	}
-	
  	
-	public function vtmin_load_vtmin_cart_for_processing(){
+	function vtmin_load_vtmin_cart_for_processing(){
       global $wpdb,  $woocommerce, $vtmin_cart, $vtmin_cart_item, $vtmin_info; 
       
       // from Woocommerce/templates/cart/mini-cart.php  and  Woocommerce/templates/checkout/review-order.php
@@ -68,7 +60,7 @@ class VTMIN_Parent_Functions {
 
  
    //  checked_list (o) - selection list from previous iteration of rule selection                                 
-    public function vtmin_fill_variations_checklist ($tax_class, $checked_list = NULL, $product_ID, $product_variation_IDs) { 
+    function vtmin_fill_variations_checklist ($tax_class, $checked_list = NULL, $product_ID, $product_variation_IDs) { 
         global $post;
         // *** ------------------------------------------------------------------------------------------------------- ***
         // additional code from:  woocommerce/admin/post-types/writepanels/writepanel-product-type-variable.php
@@ -141,7 +133,7 @@ class VTMIN_Parent_Functions {
   /* ************************************************
   **   Get all variations for product
   *************************************************** */
-  public function vtmin_get_variations_list($product_ID) {
+  function vtmin_get_variations_list($product_ID) {
         
     //sql from woocommerce/classes/class-wc-product.php
    $variations = get_posts( array(
@@ -165,7 +157,7 @@ class VTMIN_Parent_Functions {
   } 
   
   
-  public function vtmin_test_for_variations ($prod_ID) { 
+  function vtmin_test_for_variations ($prod_ID) { 
       
      $vartest_response = 'no';
      
@@ -193,6 +185,53 @@ class VTMIN_Parent_Functions {
      
      return ($vartest_response);   
   }     
+
+  //v1.07 begin
     
-} //end class
-$vtmin_parent_functions = new VTMIN_Parent_Functions;
+   function vtmin_format_money_element($price) { 
+      //from woocommerce/woocommerce-core-function.php   function woocommerce_price
+    	$return          = '';
+    	$num_decimals    = (int) get_option( 'woocommerce_price_num_decimals' );
+    	$currency_pos    = get_option( 'woocommerce_currency_pos' );
+    	$currency_symbol = get_woocommerce_currency_symbol();
+    	$decimal_sep     = wp_specialchars_decode( stripslashes( get_option( 'woocommerce_price_decimal_sep' ) ), ENT_QUOTES );
+    	$thousands_sep   = wp_specialchars_decode( stripslashes( get_option( 'woocommerce_price_thousand_sep' ) ), ENT_QUOTES );
+    
+    	$price           = apply_filters( 'raw_woocommerce_price', (double) $price );
+    	$price           = number_format( $price, $num_decimals, $decimal_sep, $thousands_sep );
+    
+    	if ( get_option( 'woocommerce_price_trim_zeros' ) == 'yes' && $num_decimals > 0 )
+    		$price = woocommerce_trim_zeros( $price );
+    
+    	//$return = '<span class="amount">' . sprintf( get_woocommerce_price_format(), $currency_symbol, $price ) . '</span>'; 
+
+     $formatted = sprintf( get_woocommerce_price_format(), $currency_symbol, $price );
+     
+     return $formatted;
+   }
+   
+   //****************************
+   // Gets Currency Symbol from PARENT plugin   - only used in backend UI during rules update
+   //****************************   
+  function vtmin_get_currency_symbol() {    
+    return get_woocommerce_currency_symbol();  
+  } 
+
+
+  function vtmin_debug_options(){
+    global $vtprd_setup_options;
+    //************
+    // Turn OFF all php Notices, except in debug mode      v1.0.3 
+    //   Settings switch 'Test Debugging Mode Turned On'
+    //************
+    if ( $vtmin_setup_options['debugging_mode_on'] != 'yes' ){
+      //TURN OFF all php notices, in case this default is not set in user's php ini
+      //error_reporting(E_ALL ^ E_NOTICE);    //report all errors except notices
+      error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED ); //hide notices and warnings  v1.0.5
+    } 
+    //************
+  }
+  
+  //***** v1.0.5  end
+  
+  //v1.07 end

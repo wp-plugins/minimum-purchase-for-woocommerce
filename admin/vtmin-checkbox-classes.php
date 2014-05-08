@@ -33,10 +33,11 @@ class VTMIN_Checkbox_classes{
             
     public function vtmin_is_product_in_tax_list ($prod_id, $tax_name, $checked_list) { 
         $tax_ids = wp_get_object_terms( $prod_id, $tax_name ); //get all terms within tax this id belongs to 
-        for($i=0; $i < sizeof($tax_ids); $i++){
+        $sizeof_tax_ids = sizeof($tax_ids);
+        for($i=0; $i < $sizeof_tax_ids; $i++){
             if (strpos($checked_list, $tax_ids[$i])) {   //if cat_id is in previously checked_list
                 $selected = true;
-                $i = sizeof($tax_ids);
+                $i = $sizeof_tax_ids;
             } 
         }
         if ($selected) {
@@ -87,7 +88,8 @@ class VTMIN_Checkbox_classes{
         
         $checked_list;
         $checkbox = $_REQUEST['rolelist'];   //gets all of the selected 'rolelist[]' boxes
-        for($i=0; $i < sizeof($checkBox); $i++){
+        $sizeof_checkBox = sizeof($checkBox);
+        for($i=0; $i < $sizeof_checkBox; $i++){
             $checked_list .= $checkBox[$i].'>';   //returns 'value' from checkbox input statement
         } 
         return $checked_list;
@@ -98,7 +100,8 @@ class VTMIN_Checkbox_classes{
     */
     public function vtmin_checked_list_from_checkboxes ($checkbox) { 
         $checked_list;
-        for($i=0; $i < sizeof($checkBox); $i++){
+        $sizeof_checkBox = sizeof($checkBox);
+        for($i=0; $i < $sizeof_checkBox; $i++){
             $checked_list .= $checkBox[$i].'>';   //returns 'value' from checkbox input statement
         } 
         return $checked_list;

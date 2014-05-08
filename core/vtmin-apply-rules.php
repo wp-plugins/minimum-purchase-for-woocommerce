@@ -1,17 +1,18 @@
 <?php
 
 class VTMIN_Apply_Rules{
-	
+/* ********************************************** **********************************************
+TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
+*********************************************************************************************/	
 	public function __construct(){
 		global $vtmin_cart, $vtmin_rules_set, $vtmin_rule;
     //get pre-formatted rules from options field
     
     $vtmin_rules_set = get_option( 'vtmin_rules_set' );
 
-    $vtmin_parent_functions = new VTMIN_Parent_Functions;
-    
+
     // create a new vtmin_cart intermediary area, load with parent cart values.  results in global $vtmin_cart.
-    $vtmin_parent_functions->vtmin_load_vtmin_cart_for_processing(); 
+    vtmin_load_vtmin_cart_for_processing(); 
     
     $this->vtmin_minimum_purchase_check();
 	}
@@ -28,11 +29,12 @@ class VTMIN_Apply_Rules{
     /*  Analyze each rule, and load up any cart products found into the relevant rule
         fill rule array with product cart data :: load inpop info 
     */  
-    $sizeOf_vtmin_rules_set = sizeof($vtmin_rules_set);
+    $sizeof_vtmin_rules_set = sizeof($vtmin_rules_set);
+    $sizeof_cart_items = sizeof($vtmin_cart->cart_items);
      
-    for($i=0; $i < $sizeOf_vtmin_rules_set; $i++) {                                                               
-      if ( $vtmin_rules_set[$i]->rule_status == 'publish' ) {       
-        for($k=0; $k < sizeof($vtmin_cart->cart_items); $k++) {                 
+    for($i=0; $i < $sizeof_vtmin_rules_set; $i++) {                                                               
+      if ( $vtmin_rules_set[$i]->rule_status == 'publish' ) {                       
+        for($k=0; $k < $sizeof_cart_items; $k++) {                 
             switch( $vtmin_rules_set[$i]->inpop_selection ) {  
               case 'groups':
                   //test if product belongs in rule inpop
@@ -54,7 +56,7 @@ class VTMIN_Apply_Rules{
     /*  Analyze each Rule population, and see if they satisfy the rule
     *     identify and label each rule as requiring action = yes/no
     */
-    for($i=0; $i < $sizeOf_vtmin_rules_set; $i++) {         
+    for($i=0; $i < $sizeof_vtmin_rules_set; $i++) {         
         if ( $vtmin_rules_set[$i]->rule_status == 'publish' ) {  
           
           if ( sizeof($vtmin_rules_set[$i]->inpop_found_list) == 0 ) {
@@ -62,7 +64,7 @@ class VTMIN_Apply_Rules{
           } else {
             
             $vtmin_rules_set[$i]->rule_requires_cart_action = 'pending';
-            $sizeOf_inpop_found_list = sizeof($vtmin_rules_set[$i]->inpop_found_list);
+            $sizeof_inpop_found_list = sizeof($vtmin_rules_set[$i]->inpop_found_list);
             /*
                 AS only one product can be found with 'single', override to 'all' speeds things along
             */
@@ -86,13 +88,13 @@ class VTMIN_Apply_Rules{
                         }
                     } 
                     if ($vtmin_rules_set[$i]->rule_requires_cart_action == 'yes') {
-                       for($k=0; $k < $sizeOf_inpop_found_list; $k++) {
+                       for($k=0; $k < $sizeof_inpop_found_list; $k++) {
                           $this->vtmin_mark_product_as_requiring_cart_action($i,$k);                          
                        }
                     }  		
               		break;
                case 'each': //$specChoice_value = 'each' => apply the rule to each product individually across all products found         		
-              		  for($k=0; $k < $sizeOf_inpop_found_list; $k++) {
+              		  for($k=0; $k < $sizeof_inpop_found_list; $k++) {
                         if ($vtmin_rules_set[$i]->amtSelected_selection == 'currency'){   //price total
                             if ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_total_price'] >= $vtmin_rules_set[$i]->minimum_amt['value']){
                                $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
@@ -112,7 +114,7 @@ class VTMIN_Apply_Rules{
                case 'any':  //$specChoice_value = 'any'  =>   "You must buy a minimum of $10 for each of any of 2 products from this group."       		
               		  //Version 1.01 completely replaced the original case logic
                     $any_action_cnt = 0;
-                    for($k=0; $k < $sizeOf_inpop_found_list; $k++) {
+                    for($k=0; $k < $sizeof_inpop_found_list; $k++) {
                         if ($vtmin_rules_set[$i]->amtSelected_selection == 'currency'){   //price total
                             if ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_total_price'] < $vtmin_rules_set[$i]->minimum['value']){
                                $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
@@ -130,7 +132,7 @@ class VTMIN_Apply_Rules{
                         }
                         //if 'any' limit reached, end the loop, don't mark any mor products as requiring cart action
                         if ($any_action_cnt >= $vtmin_rules_set[$i]->anyChoice_max['value']) {
-                            $k = $sizeOf_inpop_found_list;   
+                            $k = $sizeof_inpop_found_list;   
                         }
                     }                  
                   break;
@@ -143,7 +145,8 @@ class VTMIN_Apply_Rules{
     //   IF WE DON'T DO "apply multiple rules to product", rollout the multples   
     //****************************************************************************
     if ($vtmin_setup_options[apply_multiple_rules_to_product] == 'no' )  {
-      for($k=0; $k < sizeof($vtmin_cart->cart_items); $k++) {             //$k = 'cart item'
+      $sizeof_cart_items = sizeof($vtmin_cart->cart_items);
+      for($k=0; $k < $sizeof_cart_items; $k++) {             //$k = 'cart item'
          if ( sizeof($vtmin_cart->cart_items[$k]->product_participates_in_rule) > 1 ) {  
             //*****************************
             //remove product from **2ND** TO NTH rule, roll quantity and price out of totals for that rule
@@ -188,7 +191,7 @@ class VTMIN_Apply_Rules{
      *           the info is held in the global namespace.                                   
     */
     $vtmin_info['error_message_needed'] = 'no';
-    for($i=0; $i < $sizeOf_vtmin_rules_set; $i++) {               
+    for($i=0; $i < $sizeof_vtmin_rules_set; $i++) {               
         if ( $vtmin_rules_set[$i]->rule_status == 'publish' ) {    
             switch( true ) {            
               case ($vtmin_rules_set[$i]->rule_requires_cart_action == 'no'):
@@ -419,7 +422,7 @@ class VTMIN_Apply_Rules{
      $message_line .= __('</span>', 'vtmin'); //end "quantity" end "color-grp"
      
      $message_line .= __('<span class="price-column price">', 'vtmin');
-     $message_line .= $this->vtmin_format_money_element($vtmin_cart->cart_items[$k]->unit_price);
+     $message_line .= vtmin_format_money_element($vtmin_cart->cart_items[$k]->unit_price);
      //$message_line .= $vtmin_cart->cart_items[$k]->unit_price;
      $message_line .= __('</span>', 'vtmin'); //end "price"
      
@@ -434,7 +437,7 @@ class VTMIN_Apply_Rules{
         $message_line .= __('<span class="total-column total">', 'vtmin');   
       }
      //$message_line .= $vtmin_cart->cart_items[$k]->total_price;
-     $message_line .= $this->vtmin_format_money_element($vtmin_cart->cart_items[$k]->total_price);
+     $message_line .= vtmin_format_money_element($vtmin_cart->cart_items[$k]->total_price);
      if ( ($vtmin_rules_set[$i]->amtSelected_selection == 'currency') && ($vtmin_info['bold_the_error_amt_on_detail_line'] == 'yes') ) {
        $message_line .= __(' &nbsp;(Error)', 'vtmin');
      }     
@@ -482,7 +485,7 @@ class VTMIN_Apply_Rules{
         $message_totals .= $vtmin_info['cart_color_cnt'];
         $message_totals .= __('">(', 'vtmin');
         //grp total price
-        $message_totals .= $this->vtmin_format_money_element($vtmin_info['cart_grp_info']['price']);
+        $message_totals .= vtmin_format_money_element($vtmin_info['cart_grp_info']['price']);
         $message_totals .= __(') Error', 'vtmin'); 
       } else {
         $message_totals .= __('<span class="quantity-column">', 'vtmin');
@@ -515,51 +518,7 @@ class VTMIN_Apply_Rules{
                                            'price'    => 0
                                           );
    }
-   
-   public function vtmin_format_money_element($money) { 
-     global $vtmin_setup_options; 
-           
-     $formatted = sprintf("%01.2f", $money); //yields 2places filled right of the dec
-     $formatted = $this->vtmin_get_currency_symbol( $vtmin_setup_options['use_this_currency_sign'] ) . $formatted;
-     return $formatted;
-   }
-   
-   public function vtmin_get_currency_symbol( $currency ) {
-    	$currency_symbol = '';
-    	switch ($currency) {
-    		case 'BRL' : $currency_symbol = '&#82;&#36;'; break;
-    		case 'AUD' : $currency_symbol = '&#36;'; break;
-    		case 'CAD' : $currency_symbol = '&#36;'; break;
-    		case 'MXN' : $currency_symbol = '&#36;'; break;
-    		case 'NZD' : $currency_symbol = '&#36;'; break;
-    		case 'HKD' : $currency_symbol = '&#36;'; break;
-    		case 'SGD' : $currency_symbol = '&#36;'; break;
-    		case 'USD' : $currency_symbol = '&#36;'; break;
-    		case 'EUR' : $currency_symbol = '&euro;'; break;
-    		case 'CNY' : $currency_symbol = '&yen;'; break;
-    		case 'RMB' : $currency_symbol = '&yen;'; break;
-    		case 'JPY' : $currency_symbol = '&yen;'; break;
-    		case 'TRY' : $currency_symbol = '&#84;&#76;'; break;
-    		case 'NOK' : $currency_symbol = '&#107;&#114;'; break;
-    		case 'ZAR' : $currency_symbol = '&#82;'; break;
-    		case 'CZK' : $currency_symbol = '&#75;&#269;'; break;
-    		case 'MYR' : $currency_symbol = '&#82;&#77;'; break;
-    		case 'DKK' : $currency_symbol = '&#107;&#114;'; break;
-    		case 'HUF' : $currency_symbol = '&#70;&#116;'; break;
-    		case 'ILS' : $currency_symbol = '&#8362;'; break;
-    		case 'PHP' : $currency_symbol = '&#8369;'; break;
-    		case 'PLN' : $currency_symbol = '&#122;&#322;'; break;
-    		case 'SEK' : $currency_symbol = '&#107;&#114;'; break;
-    		case 'CHF' : $currency_symbol = '&#67;&#72;&#70;'; break;
-    		case 'TWD' : $currency_symbol = '&#78;&#84;&#36;'; break;
-    		case 'THB' : $currency_symbol = '&#3647;'; break;
-    		case 'GBP' : $currency_symbol = '&pound;'; break;
-    		case 'RON' : $currency_symbol = 'lei'; break;
-    		default    : $currency_symbol = ''; break;
-    	}
-    	return $currency_symbol;
-  } 
-    
+ 
            
    public function vtmin_table_text_line ($i){
       global $vtmin_setup_options, $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info;
@@ -591,7 +550,7 @@ class VTMIN_Apply_Rules{
       $message_text .= __('">', 'vtmin');
       
       if ($vtmin_rules_set[$i]->amtSelected_selection == 'currency') {
-        $message_text .= $this->vtmin_format_money_element($vtmin_rules_set[$i]->minimum_amt['value']);
+        $message_text .= vtmin_format_money_element($vtmin_rules_set[$i]->minimum_amt['value']);
         $message_text .= __('</span> required ', 'vtmin');     //if branch end "color-grp"
       } else {
         $message_text .= $vtmin_rules_set[$i]->minimum_amt['value']; 

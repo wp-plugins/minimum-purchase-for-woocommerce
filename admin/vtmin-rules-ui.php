@@ -69,12 +69,13 @@ class VTMIN_Rules_UI {
       if ($post->ID > ' ' ) {
         $post_id =  $post->ID;
         $vtmin_rules_set   = get_option( 'vtmin_rules_set' ) ;
-        for($i=0; $i < sizeof($vtmin_rules_set); $i++) { 
+        $sizeof_rules_set = sizeof($vtmin_rules_set);
+        for($i=0; $i < $sizeof_rules_set; $i++) { 
            if ($vtmin_rules_set[$i]->post_id == $post_id) {
               $vtmin_rule = $vtmin_rules_set[$i];  //load vtmin-rule               
               $found_rule = true;
               $found_rule_index = $i; 
-              $i =  sizeof($vtmin_rules_set);
+              $i =  $sizeof_rules_set;
            }
         }
       } 
@@ -182,7 +183,8 @@ class VTMIN_Rules_UI {
           <h3><?php _e('Select Search Type', 'vtmin')?></h3>
           <div id="inpopRadio">
           <?php
-           for($i=0; $i < sizeof($vtmin_rule->inpop); $i++) { 
+           $sizeof_rule_inpop = sizeof($vtmin_rule->inpop);
+           for($i=0; $i < $sizeof_rule_inpop; $i++) { 
            ?>                 
               
               <input id="<?php echo $vtmin_rule->inpop[$i]['id']; ?>" class="<?php echo $vtmin_rule->inpop[$i]['class']; ?>" type="<?php echo $vtmin_rule->inpop[$i]['type']; ?>" name="<?php echo $vtmin_rule->inpop[$i]['name']; ?>" value="<?php echo $vtmin_rule->inpop[$i]['value']; ?>" <?php if ( $vtmin_rule->inpop[$i]['user_input'] > ' ' ) { echo $checked; } else { echo $disabled; } ?> /><span id="<?php echo $vtmin_rule->inpop[$i]['id'] . '-label'; ?>"> <?php echo $vtmin_rule->inpop[$i]['label']; ?></span><br />
@@ -257,8 +259,7 @@ class VTMIN_Rules_UI {
               <div id="inpopVarButton">
                  <?php
                     $product_ID = $vtmin_rule->inpop_varProdID['value'];
-                    $vtmin_parent_functions = new VTMIN_Parent_Functions; 
-                    $product_variation_IDs = $vtmin_parent_functions->vtmin_get_variations_list($product_ID);
+                    $product_variation_IDs = vtmin_get_variations_list($product_ID);
                     /* ************************************************
                     **   Get Variations Button for Rule screen
                     *     ==>>> get the product id from $_REQUEST['varProdID'];  in the receiving ajax routine. 
@@ -537,8 +538,7 @@ source: http://www.ilovecolors.com.ar/avoid-hierarchical-taxonomies-to-loose-hie
                   $vtmin_checkbox_classes->vtmin_fill_roles_checklist($tax_class, $checked_list);
                 break;
               case 'variations':                  
-                  $vtmin_parent_functions = new VTMIN_Parent_Functions;
-                  $vtmin_parent_functions->vtmin_fill_variations_checklist($tax_class, $checked_list, $product_ID, $product_variation_IDs);                            
+                  vtmin_fill_variations_checklist($tax_class, $checked_list, $product_ID, $product_variation_IDs);                            
                 break;
               default:  //product category or vtmin category...
                   $this->vtmin_build_checkbox_contents ($taxonomy, $tax_class, $checked_list);                             

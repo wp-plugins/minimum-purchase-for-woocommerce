@@ -3,26 +3,11 @@
 Plugin Name: VarkTech Minimum Purchase for WooCommerce
 Plugin URI: http://varktech.com
 Description: An e-commerce add-on for WooCommerce, supplying minimum purchase functionality.
-Version: 1.06
+Version: 1.07
 Author: Vark
 Author URI: http://varktech.com
 */
 
-/*
-== Changelog ==
-
-= 1.06 - 2013-02-23 =
-* Bug Fix - "unexpected T_CLASS" - File admin/vtmin-rules-ui.php was corrupted, but the corruption only showed up on some hosts (?!).  Huge thanks to Don for allowing full access to his installation to debug.   
-
-= 1.05 - 2013-02-13 =
-* Bug Fix - Rule Add screen was being overwritten by some other plugins' global metaboxes - thanks to Dagofee for debug help
-* Bug Fix - PHP version check not being executed correctly on activation hook (minimum PHP version 5 required)
-* Bug Fix - Nuke and Repair buttons on Options screen were also affecting main Options settings, now fixed
- 
-= 1.0  - 2013-01-15 =
-* Initial Public Release
-
-*/
 
 /*
 ** define Globals 
@@ -39,8 +24,8 @@ class VTMIN_Controller{
 	
 	public function __construct(){    
    
-		define('VTMIN_VERSION',                               '1.06');
-    define('VTMIN_LAST_UPDATE_DATE',                      '2013-02-23');
+		define('VTMIN_VERSION',                               '1.07');
+    define('VTMIN_LAST_UPDATE_DATE',                      '2014-05-07');
     define('VTMIN_DIRNAME',                               ( dirname( __FILE__ ) ));
     define('VTMIN_URL',                                   plugins_url( '', __FILE__ ) );
     define('VTMIN_EARLIEST_ALLOWED_WP_VERSION',           '3.3');   //To pick up wp_get_object_terms fix, which is required for vtmin-parent-functions.php
@@ -71,14 +56,21 @@ class VTMIN_Controller{
  *************************************************** */
 	public function vtmin_controller_init(){
     global $vtmin_setup_options;
-   
+
+  
     load_plugin_textdomain( 'vtmin', null, dirname( plugin_basename( __FILE__ ) ) . '/languages' ); 
 
     require ( VTMIN_DIRNAME . '/core/vtmin-backbone.php' );    
     require ( VTMIN_DIRNAME . '/core/vtmin-rules-classes.php');
     require ( VTMIN_DIRNAME . '/woo-integration/vtmin-parent-functions.php');
     require ( VTMIN_DIRNAME . '/woo-integration/vtmin-parent-cart-validation.php');
-    
+
+    //moved here v1.07
+    if (get_option( 'vtmin_setup_options' ) ) {
+      $vtmin_setup_options = get_option( 'vtmin_setup_options' );  //put the setup_options into the global namespace
+    }        
+    vtmin_debug_options();  //v1.07
+        
     if (is_admin()){
         //fix 02-132013 - register_activation_hook now at bottom of file, after class instantiates
         require ( VTMIN_DIRNAME . '/admin/vtmin-setup-options.php');
@@ -106,9 +98,7 @@ class VTMIN_Controller{
     }
     
     wp_enqueue_script('jquery'); 
-    if (get_option( 'vtmin_setup_options' ) ) {
-      $vtmin_setup_options = get_option( 'vtmin_setup_options' );  //put the setup_options into the global namespace
-    }
+
 
   }
   

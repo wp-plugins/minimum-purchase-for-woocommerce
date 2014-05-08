@@ -151,6 +151,7 @@ class VTMIN_Parent_Cart_Validation {
   /* ************************************************
   **   Application - get current page url
   *************************************************** */ 
+ /*
  public  function vtmin_currPageURL() {
      $pageURL = 'http';
      if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
@@ -162,7 +163,70 @@ class VTMIN_Parent_Cart_Validation {
      }
      return $pageURL;
   } 
+  */
+     
+  /* ************************************************
+  **   Application - get current page url
+  *       
+  *       The code checking for 'www.' is included since
+  *       some server configurations do not respond with the
+  *       actual info, as to whether 'www.' is part of the 
+  *       URL.  The additional code balances out the currURL,
+  *       relative to the Parent Plugin's recorded URLs           
+  *************************************************** */ 
+ public  function vtmin_currPageURL() {
+     global $vtmin_info;
+     $currPageURL = $this->vtmin_get_currPageURL();
+     $www = 'www.';
+     
+     $curr_has_www = 'no';
+     if (strpos($currPageURL, $www )) {
+         $curr_has_www = 'yes';
+     }
+     
+     //use checkout URL as an example of all setup URLs
+     $checkout_has_www = 'no';
+     if (strpos($vtmin_info['woo_checkout_url'], $www )) {
+         $checkout_has_www = 'yes';
+     }     
+         
+     switch( true ) {
+        case ( ($curr_has_www == 'yes') && ($checkout_has_www == 'yes') ):
+        case ( ($curr_has_www == 'no')  && ($checkout_has_www == 'no') ): 
+            //all good, no action necessary
+          break;
+        case ( ($curr_has_www == 'no') && ($checkout_has_www == 'yes') ):
+            //reconstruct the URL with 'www.' included.
+            $currPageURL = $this->vtmin_get_currPageURL($www); 
+          break;
+        case ( ($curr_has_www == 'yes') && ($checkout_has_www == 'no') ): 
+            //all of the woo URLs have no 'www.', and curr has it, so remove the string 
+            $currPageURL = str_replace($www, "", $currPageURL);
+          break;
+     } 
  
+     return $currPageURL;
+  } 
+ public  function vtmin_get_currPageURL($www = null) {
+     global $vtmin_info;
+     $pageURL = 'http';
+     //if ($_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+     if ( isset( $_SERVER["HTTPS"] ) && strtolower( $_SERVER["HTTPS"] ) == "on" ) { $pageURL .= "s";}
+     $pageURL .= "://";
+     $pageURL .= $www;   //mostly null, only active rarely, 2nd time through - see above
+     
+     //NEVER create the URL with the port name!!!!!!!!!!!!!!
+     $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+     /* 
+     if ($_SERVER["SERVER_PORT"] != "80") {
+        $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+     } else {
+        $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+     }
+     */
+     return $pageURL;
+  }  
+   
     
 
   /* ************************************************

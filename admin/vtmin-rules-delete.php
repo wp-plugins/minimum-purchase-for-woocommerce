@@ -9,10 +9,11 @@ class VTMIN_Rule_delete {
     global $post, $vtmin_info, $vtmin_rules_set, $vtmin_rule;
     $post_id = $post->ID;    
     $vtmin_rules_set = get_option( 'vtmin_rules_set' ) ;
-    for($i=0; $i < sizeof($vtmin_rules_set); $i++) { 
+    $sizeof_rules_set = sizeof($vtmin_rules_set);
+    for($i=0; $i < $sizeof_rules_set; $i++) { 
        if ($vtmin_rules_set[$i]->post_id == $post_id) {
           unset ($vtmin_rules_set[$i]);   //this is the 'delete'
-          $i =  sizeof($vtmin_rules_set); 
+          $i =  $sizeof_rules_set; 
        }
     }
    
@@ -30,13 +31,14 @@ class VTMIN_Rule_delete {
     global $post, $vtmin_info, $vtmin_rules_set, $vtmin_rule;
     $post_id = $post->ID;    
     $vtmin_rules_set = get_option( 'vtmin_rules_set' ) ;
-    for($i=0; $i < sizeof($vtmin_rules_set); $i++) { 
+    $sizeof_rules_set = sizeof($vtmin_rules_set);
+    for($i=0; $i < $sizeof_rules_set; $i++) { 
        if ($vtmin_rules_set[$i]->post_id == $post_id) {
           if ( $vtmin_rules_set[$i]->rule_status =  'publish' ) {    //only update if necessary, may already be pending
             $vtmin_rules_set[$i]->rule_status =  'pending';
             update_option( 'vtmin_rules_set', $vtmin_rules_set ); 
           }
-          $i =  sizeof($vtmin_rules_set); //set to done
+          $i =  $sizeof_rules_set; //set to done
        }
     }
  }  
@@ -48,7 +50,8 @@ class VTMIN_Rule_delete {
     global $post, $vtmin_info, $vtmin_rules_set, $vtmin_rule;
     $post_id = $post->ID;     
     $vtmin_rules_set = get_option( 'vtmin_rules_set' ) ;
-    for($i=0; $i < sizeof($vtmin_rules_set); $i++) { 
+    $sizeof_rules_set = sizeof($vtmin_rules_set);
+    for($i=0; $i < $sizeof_rules_set; $i++) { 
        if ($vtmin_rules_set[$i]->post_id == $post_id) {
           if  ( sizeof($vtmin_rules_set[$i]->rule_error_message) > 0 ) {   //if there are error message, the status remains at pending
             //$vtmin_rules_set[$i]->rule_status =  'pending';   status already pending
@@ -58,7 +61,7 @@ class VTMIN_Rule_delete {
             $vtmin_rules_set[$i]->rule_status =  'publish';
             update_option( 'vtmin_rules_set', $vtmin_rules_set );  
           }
-          $i =  sizeof($vtmin_rules_set);   //set to done
+          $i =  $sizeof_rules_set;   //set to done
        }
     }
  }  
@@ -96,7 +99,8 @@ class VTMIN_Rule_delete {
   public  function vtmin_repair_all_rules() {
     global $wpdb, $post, $vtmin_info, $vtmin_rules_set, $vtmin_rule;    
     $vtmin_rules_set = get_option( 'vtmin_rules_set' ) ;
-    for($i=0; $i < sizeof($vtmin_rules_set); $i++) { 
+    $sizeof_rules_set = sizeof($vtmin_rules_set);
+    for($i=0; $i < $sizeof_rules_set; $i++) { 
        $test_post = get_post($vtmin_rules_set[$i]->post_id );
        if ( !$test_post ) {
            unset ($vtmin_rules_set[$i]);   //this is the 'delete'
