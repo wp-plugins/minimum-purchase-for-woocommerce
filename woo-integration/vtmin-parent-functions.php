@@ -205,8 +205,14 @@ Parent Plugin Integration
     
     	//$return = '<span class="amount">' . sprintf( get_woocommerce_price_format(), $currency_symbol, $price ) . '</span>'; 
 
-     $formatted = sprintf( get_woocommerce_price_format(), $currency_symbol, $price );
-     
+    $current_version =  WOOCOMMERCE_VERSION;
+    if( (version_compare(strval('2'), strval($current_version), '>') == 1) ) {   //'==1' = 2nd value is lower     
+      $formatted = number_format( $price, $num_decimals, stripslashes( get_option( 'woocommerce_price_decimal_sep' ) ), stripslashes( get_option( 'woocommerce_price_thousand_sep' ) ) );
+      $formatted = $currency_symbol . $formatted;
+    } else {
+      $formatted = sprintf( get_woocommerce_price_format(), $currency_symbol, $price );
+    }
+          
      return $formatted;
    }
    
