@@ -48,6 +48,11 @@ class VTMIN_Rule {
      public  $amtSelected_selection;
      public  $minimum_amt;
      
+     //v1.08 begin
+     //custom messaging      
+     public  $custMsg_text;
+     //v1.08 end     
+          
      /*********************
      * error messages during admin rule creation - if error message, 
      *      overall rule status is pending, 
@@ -226,6 +231,9 @@ class VTMIN_Rule {
             'name'  => 'amtChoice-count',  
             'value'  => '1'                     
           );
+          
+     $this->custMsg_text; //v1.08 
+      
      $this->rule_error_message = array();
            
      /* ************************************************* */

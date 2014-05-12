@@ -26,6 +26,7 @@ class VTMIN_Parent_Definitions {
 
 
     global $vtmin_info;      
+    $default_full_msg   =  __('Enter Custom Message', 'vtmin');   //v1.08
     $vtmin_info = array(                                                                    
       	'parent_plugin' => 'woo',
       	'parent_plugin_taxonomy' => 'product_cat',
@@ -52,7 +53,8 @@ class VTMIN_Parent_Definitions {
         'currPageURL'  => '',
         'woo_cart_url'  => '',
         'woo_checkout_url'  => '',
-        'woo_pay_url'  => ''
+        'woo_pay_url'  => '',
+        'default_full_msg'  => $default_full_msg //v1.08
       );
 
 	}

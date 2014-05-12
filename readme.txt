@@ -4,7 +4,7 @@ Donate link: http://www.varktech.com/woocommerce/minimum-purchase-for-woocommerc
 Tags: e-commerce, WooCommerce, shop, store, admin, price, pricing, minimum, purchase, limits, checkout
 Requires at least: 3.3
 Tested up to: 3.9
-Stable tag: 1.07
+Stable tag: 1.08
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -20,6 +20,9 @@ If a purchase in your store fails a minimum purchase rule, an error message appe
 
 Fully tested with WooCommerce 2.1+ .
 
+
+= Now with Custom Messaging! =
+You can enter Custom Messages by Rule 
 
 = Introductory Video =
 [youtube http://www.youtube.com/watch?v=_2fyD57c9Zc]
@@ -143,6 +146,10 @@ Please review the following printed and video documentation.
 
 == Changelog ==
 
+= 1.08 - 2014-05-11 =
+* Enhancement - Custom Messaging! Overrides default messaging for rule.
+* Fix - New rule add - stutter removed
+
 = 1.07 - 2014-05-07 =
 * Enhancement - change currency sign and currency formatting to follow parent plugin, removed setting from this plugin
 * Fix - Https issue resolved
@@ -160,6 +167,9 @@ Please review the following printed and video documentation.
 * Initial Public Release
 
 == Upgrade Notice ==
+
+= 1.08 - 2014-05-11 =
+* Enhancement - Custom Messaging! Overrides default messaging for rule.
 
 = 1.07 - 2014-05-07 =
 * Enhancement - change currency sign and currency formatting to follow parent plugin, removed setting from this plugin

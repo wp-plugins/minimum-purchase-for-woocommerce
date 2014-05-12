@@ -8,7 +8,8 @@ class VTMIN_Cart {
     //error messages at rule application time
     public $error_messages;
     //flag to prevent multiple processing iterations
-    public $error_messages_processed; 
+    public $error_messages_processed;
+    public $error_messages_are_custom;   //v1.08
     
     
 	public function __construct(){
@@ -19,11 +20,13 @@ class VTMIN_Cart {
         array(
           'msg_from_this_rule_id'    => '',
           'msg_from_this_rule_occurrence' => '',
-          'msg_text'  => ''  
+          'msg_text'  => '',
+          'msg_is_custom'   => ''    //v1.08
         )
         */
     ); 
-    $this->error_messages_processed;         
+    $this->error_messages_processed; 
+    $this->error_messages_are_custom;     //v1.08      
   }
   
 

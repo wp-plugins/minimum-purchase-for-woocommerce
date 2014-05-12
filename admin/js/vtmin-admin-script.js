@@ -193,4 +193,49 @@
                                 $("#inpop-varProdID-descrip").toggle("slow");                           
                             });
 
+                           
+                           //v1.08 begin 
+                            /*     
+                                 //If the saved msg = the default, user hasn't entered a msg, make it italic!
+                                 if ($("#cust-msg-text").val() == $("#fullMsg").val() ) {
+                                   jQuery('#cust-msg-text').css('color', '#666 !important').css("font-style","italic");                                                     
+                                 };
+                                 if ($("#cust-msg-text").val() <= ' ' ) {
+                                      var elem = document.getElementById("cust-msg-text");
+                                      elem.value = $("#fullMsg").val();//hidden field with lit
+                                      jQuery('#cust-msg-text').css('color', '#666 !important').css("font-style","italic");                                                   
+                                 };
+    
+               
+                              	// input on focus  FUNCTION - REMOVE msg so they can type
+                            		jQuery("#cust-msg-text[type=text]").focus(function() {
+        
+                                  var id = jQuery(this).attr('id'); 
+                                  if (id == 'cust-msg-text') {
+                            				if (this.value === $("#fullMsg").val()) {
+                                      this.value = '';
+                                    }
+                            			}                         
+                            			//jQuery(this).removeClass('blur');
+                            			//return css to normal!!
+                                  jQuery(this).css("color","#000").css("font-style","normal");
+                            		});
+                               
+                                
+                                //FUNCTION - put msg back if nothing is there!!!
+                            		jQuery("#cust-msg-text[type=text]").blur(function() {                    				
+                                  var id = jQuery(this).attr('id');
+                            			if (id == 'cust-msg-text') {
+                            				var default_value = $("#fullMsg").val();
+                            			} 
+                            			if(this.value === '') {
+                            				this.value = default_value;
+                            			//return css to normal!!
+                                  jQuery(this).css("color","#666666").css("font-style","italic");
+                            			}                    			
+                            		});          
+                            */
+                           //v1.08 end
+
+
                         }); //end ready function 

@@ -3,7 +3,7 @@
 Plugin Name: VarkTech Minimum Purchase for WooCommerce
 Plugin URI: http://varktech.com
 Description: An e-commerce add-on for WooCommerce, supplying minimum purchase functionality.
-Version: 1.07
+Version: 1.08
 Author: Vark
 Author URI: http://varktech.com
 */
@@ -24,8 +24,8 @@ class VTMIN_Controller{
 	
 	public function __construct(){    
    
-		define('VTMIN_VERSION',                               '1.07');
-    define('VTMIN_LAST_UPDATE_DATE',                      '2014-05-07');
+		define('VTMIN_VERSION',                               '1.08');
+    define('VTMIN_LAST_UPDATE_DATE',                      '2014-05-11');
     define('VTMIN_DIRNAME',                               ( dirname( __FILE__ ) ));
     define('VTMIN_URL',                                   plugins_url( '', __FILE__ ) );
     define('VTMIN_EARLIEST_ALLOWED_WP_VERSION',           '3.3');   //To pick up wp_get_object_terms fix, which is required for vtmin-parent-functions.php
@@ -39,10 +39,21 @@ class VTMIN_Controller{
     /*  =============+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
     add_action('init',          array( &$this, 'vtmin_controller_init' )); 
     add_action('admin_init',    array( &$this, 'vtmin_admin_init' ));
+    
+    //v1.08 begin
+    add_action( 'draft_to_publish',       array( &$this, 'vtmin_admin_update_rule' )); 
+    add_action( 'auto-draft_to_publish',  array( &$this, 'vtmin_admin_update_rule' ));
+    add_action( 'new_to_publish',         array( &$this, 'vtmin_admin_update_rule' )); 			
+    add_action( 'pending_to_publish',     array( &$this, 'vtmin_admin_update_rule' ));    
+    //v1.08 end
+    
+    //standard mod/del/trash/untrash    
     add_action('save_post',     array( &$this, 'vtmin_admin_update_rule' ));
     add_action('delete_post',   array( &$this, 'vtmin_admin_delete_rule' ));    
     add_action('trash_post',    array( &$this, 'vtmin_admin_trash_rule' ));
     add_action('untrash_post',  array( &$this, 'vtmin_admin_untrash_rule' ));
+
+    
     /*  =============+++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
     
     //get rid of bulk actions on the edit list screen, which aren't compatible with this plugin's actions...

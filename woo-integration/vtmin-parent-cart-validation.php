@@ -67,7 +67,6 @@ class VTMIN_Parent_Cart_Validation {
         
     //input and output to the apply_rules routine in the global variables.
     //    results are put into $vtmin_cart
-    
     if ( $vtmin_cart->error_messages_processed == 'yes' ) {  
       $woocommerce->add_error(  __('Minimum Purchase error found.', 'vtmin') );  //supplies an error msg and prevents payment from completing 
       return;
@@ -77,14 +76,53 @@ class VTMIN_Parent_Cart_Validation {
     
     //ERROR Message Path
     if ( sizeof($vtmin_cart->error_messages) > 0 ) {      
-      //insert error messages into checkout page
-      add_action( "wp_enqueue_scripts", array($this, 'vtmin_enqueue_error_msg_css') );
-      add_action('wp_head', array(&$this, 'vtmin_display_rule_error_msg_at_checkout') );  //JS to insert error msgs 
-      $vtmin_cart->error_messages_processed = 'yes';
-      $woocommerce->add_error(  __('Minimum Purchase error found.', 'vtmin') );  //supplies an error msg and prevents payment from completing      
-    }     
+      
+      //v1.08 changes begin
+        switch( $vtmin_cart->error_messages_are_custom ) {  
+          case 'all':
+               $this->vtmin_display_custom_messages();
+            break;
+          case 'some':    
+               $this->vtmin_display_custom_messages();
+               $this->vtmin_display_standard_messages();
+            break;           
+          default:  //'none' / no state set yet
+               $this->vtmin_display_standard_messages();
+               $woocommerce->add_error(  __('Minimum Purchase error found.', 'vtmin') );  //supplies an error msg and prevents payment from completing 
+            break;                    
+        }
+
+      //v1.08 changes end 
+            
+    } 
+  
   } 
 
+
+  /* ************************************************
+  **   v1.08 New Function
+  *************************************************** */
+  public function vtmin_display_standard_messages() {
+    global $vtmin_cart, $vtmin_cart_item, $vtmin_rules_set, $vtmin_rule, $vtmin_info, $woocommerce;
+    //insert error messages into checkout page
+    add_action( "wp_enqueue_scripts", array($this, 'vtmin_enqueue_error_msg_css') );
+    add_action('wp_head', array(&$this, 'vtmin_display_rule_error_msg_at_checkout') );  //JS to insert error msgs 
+    $vtmin_cart->error_messages_processed = 'yes';
+  } 
+
+  /* ************************************************
+  **   v1.08 New Function
+  *************************************************** */
+  public function vtmin_display_custom_messages() {
+    global $vtmin_cart, $vtmin_cart_item, $vtmin_rules_set, $vtmin_rule, $vtmin_info, $woocommerce;
+    
+    for($i=0; $i < sizeof($vtmin_cart->error_messages); $i++) { 
+       if ($vtmin_cart->error_messages[$i]['msg_is_custom'] == 'yes') {  //v1.08 ==>> show custom messages here...
+          $woocommerce->add_error( $vtmin_cart->error_messages[$i]['msg_text'] ); 
+       } //end if
+    }  //end 'for' loop    
+  }   
+  
   
   /* ************************************************
   **   Application - On Error Display Message on E-Commerce Checkout Screen  
@@ -108,6 +146,7 @@ class VTMIN_Parent_Cart_Validation {
     //loop through all of the error messages 
     //          $vtmin_info['line_cnt'] is used when table formattted msgs come through.  Otherwise produces an inactive css id. 
     for($i=0; $i < sizeof($vtmin_cart->error_messages); $i++) { 
+       if ($vtmin_cart->error_messages[$i]['msg_is_custom'] != 'yes') {  //v1.08 ==>> don't show custom messages here...
      ?>
         <?php 
           //default selector for products area (".shop_table") is used on BOTH cart page and checkout page. Only use on cart page
@@ -124,6 +163,7 @@ class VTMIN_Parent_Cart_Validation {
            $('<div class="vtmin-error" id="line-cnt<?php echo $vtmin_info['line_cnt'] ?>"><h3 class="error-title">Minimum Purchase Error</h3><p> <?php echo $vtmin_cart->error_messages[$i]['msg_text'] ?> </p></div>').insertBefore('<?php echo $vtmin_setup_options['show_error_before_checkout_address_selector'] ?>');
     <?php 
           }
+       } //v1.08 end if
     }  //end 'for' loop      
      ?>   
             });   

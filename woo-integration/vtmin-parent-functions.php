@@ -43,6 +43,11 @@ Parent Plugin Integration
               $vtmin_cart_item->quantity      = $cart_item['quantity'];
               $vtmin_cart_item->unit_price    = get_option( 'woocommerce_display_cart_prices_excluding_tax' ) == 'yes' || $woocommerce->customer->is_vat_exempt() ? $_product->get_price_excluding_tax() : $_product->get_price();
               
+              /*
+              $quantity = 1; //v1.08 vat fix
+              $vtmin_cart_item->unit_price    = get_option( 'woocommerce_display_cart_prices_excluding_tax' ) == 'yes' || $woocommerce->customer->is_vat_exempt() ? $_product->get_price_excluding_tax() : $_product->get_price_including_tax( $quantity ); //$_product->get_price();   //v1.08 vat fix
+              */
+              
               $vtmin_cart_item->total_price   = $vtmin_cart_item->quantity * $vtmin_cart_item->unit_price;
               /*  *********************************
               ***  JUST the cat *ids* please...
@@ -225,7 +230,7 @@ Parent Plugin Integration
 
 
   function vtmin_debug_options(){
-    global $vtprd_setup_options;
+    global $vmin_setup_options;
     //************
     // Turn OFF all php Notices, except in debug mode      v1.0.3 
     //   Settings switch 'Test Debugging Mode Turned On'

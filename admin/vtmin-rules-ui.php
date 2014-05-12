@@ -65,7 +65,8 @@ class VTMIN_Rules_UI {
   public  function vtmin_add_metaboxes() {
       global $post, $vtmin_info, $vtmin_rule, $vtmin_rules_set;        
 
-      $found_rule = false;                            
+      $found_rule = false; 
+                                 
       if ($post->ID > ' ' ) {
         $post_id =  $post->ID;
         $vtmin_rules_set   = get_option( 'vtmin_rules_set' ) ;
@@ -98,8 +99,9 @@ class VTMIN_Rules_UI {
       add_meta_box('vtmin-pop-in-select', __('Cart Search Criteria', 'vtmin'), array(&$this, 'vtmin_pop_in_select'), 'vtmin-rule', 'normal', 'high');                      
       add_meta_box('vtmin-pop-in-specifics', __('Rule Application Method', 'vtmin'), array(&$this, 'vtmin_pop_in_specifics'), 'vtmin-rule', 'normal', 'high');
       add_meta_box('vtmin-rule-amount', __('Quantity or Price Minimum Amount', 'vtmin'), array(&$this, 'vtmin_rule_amount'), 'vtmin-rule', 'normal', 'high');
+      add_meta_box('vtmin-rule-custom-message', __('Custom Message', 'vtmin'), array(&$this, 'vtmin_rule_custom_message'), 'vtmin-rule', 'normal', 'default');  //v1.08
       add_meta_box('vtmin-rule-id', __('Minimum Purchase Rule ID', 'vtmin'), array(&$this, 'vtmin_rule_id'), 'vtmin-rule', 'side', 'low'); //low = below Publish box
-      add_meta_box('vtmin-rule-resources', __('Resources', 'vtmin'), array(&$this, 'vtmin_rule_resources'), 'vtmin-rule', 'side', 'low'); //low = below Publish box 
+      add_meta_box('vtmin-rule-resources', __('Resources', 'vtmin'), array(&$this, 'vtmin_rule_resources'), 'vtmin-rule', 'side', 'low'); //low = below Publish box  
             
       //add help tab to this screen... 
       $content = '<br><a  href="' . VTMIN_DOCUMENTATION_PATH_PRO_BY_PARENT . '"  title="Access Plugin Documentation">Access Plugin Documentation</a>';
@@ -162,6 +164,8 @@ class VTMIN_Rules_UI {
         </style>
                    
         <input type="hidden" id="vtmin_nonce" name="vtmin_nonce" value="<?php echo $vtminNonce; ?>" />
+        
+        <input type="hidden" id="fullMsg" name="fullMsg" value="<?php echo $vtmin_info['default_full_msg'];?>" />  <?php //v1.08  ?>
                             
         <div class="column1" id="inpopDescrip">
             <h4> <?php _e('Choose how to look at the Candidate Population', 'vtmin') ?></h4>
@@ -484,7 +488,25 @@ class VTMIN_Rules_UI {
        </div>
       <?php
   }       
-                                                                            
+   
+   //V1.08 NEW FUNCTION 
+   //Custom Message overriding default messaging                                                                        
+    public    function vtmin_rule_custom_message() {
+        global $post, $vtmin_info, $vtmin_rule, $vtmin_rules_set;                   
+          ?>
+        <div class="rule_message clear-left" id="cust-msg-text-area">
+           <span class="newColumn1" id=cust-msg-text-label-area>
+              <h3><?php _e('Custom Message Text', 'vtmin')?></h3>
+              <span id='cust-msg-optional'>(optional)</span>
+              <span class="clear-left" id='cust-msg-comment'>(overrides default message)</span>
+           </span>   
+            <textarea name="cust-msg-text" type="text" class="msg-text newColumn2" id="cust-msg-text" cols="50" rows="2"><?php echo $vtmin_rule->custMsg_text; ?></textarea>          
+       </div>
+
+      <?php
+  }  
+  //v1.08 end
+                                                                              
     public    function vtmin_rule_id( ) {
         global $post;           
         echo '<span id="vtmin-rule-postid">' . $post->ID . '</span>';

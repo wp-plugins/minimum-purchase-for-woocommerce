@@ -101,7 +101,15 @@ class VTMIN_Rule_update {
            $vtmin_rule->rule_error_message[] = __('In Minimum Amount for this role Metabox, Minimum Amount not numeric', 'vtmin');              
         }
      }
-    
+
+     //v1.08 begin
+     $vtmin_rule->custMsg_text = $_REQUEST['cust-msg-text'];
+     global $vtmin_info;
+     if ( $vtmin_rule->custMsg_text == $vtmin_info['default_full_msg']) {
+        $vtmin_rule->custMsg_text = '';   //re-initialize if default msg still there...
+     }   
+     //v1.08 end
+     
     //*****************************************
     //  If errors were found, the error message array will be displayed by the UI on next screen send.
     //*****************************************

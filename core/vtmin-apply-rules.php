@@ -298,12 +298,9 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
   }  //end vtmin_minimum_purchase_check
   
    
-   
-   
         
   public function vtmin_create_table_error_message () { 
-      global $vtmin_setup_options, $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info; 
-      
+      global $vtmin_setup_options, $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info;        
       $vtmin_info['line_cnt']++; //line count used in producing height parameter when messages sent to js.
       
       $vtmin_info['cart_color_cnt'] = 0;
@@ -315,7 +312,22 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
       $message = __('<span id="table-error-messages">', 'vtmin');
       
       for($i=0; $i < sizeof($vtmin_rules_set); $i++) {               
-        if ( $vtmin_rules_set[$i]->rule_requires_cart_action == 'yes' ) { 
+        if ( $vtmin_rules_set[$i]->rule_requires_cart_action == 'yes' ) {           
+          //v1.08 begin
+          if ( $vtmin_rules_set[$i]->custMsg_text > ' ') { //custom msg override              
+              /*
+              ==>> text error msg function always executed, so msg already loaded there - don't load here
+              $vtmin_cart->error_messages[] = array (
+                'msg_from_this_rule_id' => $vtmin_rules_set[$i]->post_id, 
+                'msg_from_this_rule_occurrence' => $i, 
+                'msg_text'  => $vtmin_rules_set[$i]->custMsg_text,
+                'msg_is_custom'   => 'yes' 
+              );
+              $this->vtmin_set_custom_msgs_status ('customMsg');
+              */
+              continue;
+           }           
+          //v1.08 end        
           switch ( $vtmin_rules_set[$i]->specChoice_in_selection ) {
             case  'all' :
                  $vtmin_info['action_cnt'] = 0;
@@ -362,8 +374,13 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
       //close up owning span
       $message .= __('</span>', 'vtmin'); //end "table-error-messages"
       
-      $vtmin_cart->error_messages[] = array ('msg_from_this_rule_id' => $rule_id_list, 'msg_from_this_rule_occurrence' => '', 'msg_text'  => $message );       
-      
+      $vtmin_cart->error_messages[] = array (
+        'msg_from_this_rule_id' => $rule_id_list, 
+        'msg_from_this_rule_occurrence' => '', 
+        'msg_text'  => $message,
+        'msg_is_custom'   => 'no'    //v1.08 
+      );       
+      $this->vtmin_set_custom_msgs_status ('standardMsg');     //v1.08 
   } 
   
   
@@ -634,10 +651,22 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
   
         
    public function vtmin_create_text_error_message ($i) { 
-     global $vtmin_setup_options, $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info; 
-     
+     global $vtmin_setup_options, $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info;     
      $vtmin_rules_set[$i]->rule_requires_cart_action = 'yes';
-   
+          
+      //v1.08 begin
+      if ( $vtmin_rules_set[$i]->custMsg_text > ' ') { //custom msg override              
+          $vtmin_cart->error_messages[] = array (
+            'msg_from_this_rule_id' => $vtmin_rules_set[$i]->post_id, 
+            'msg_from_this_rule_occurrence' => $i, 
+            'msg_text'  => $vtmin_rules_set[$i]->custMsg_text,
+            'msg_is_custom'   => 'yes' 
+          );
+          $this->vtmin_set_custom_msgs_status('customMsg'); 
+          return;
+       }           
+      //v1.08 end
+             
      if  ( $vtmin_setup_options['show_error_messages_in_table_form'] == 'yes' ) {
         $vtmin_info['error_message_needed'] = 'yes';
         //   $vtmin_cart->error_messages[] = array ('msg_from_this_rule_id' => $vtmin_rules_set[$i]->post_id, 'msg_from_this_rule_occurrence' => $i,'msg_text'  => '' );  
@@ -763,8 +792,14 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
         }
                 
         //queue the message to go back to the screen     
-        $vtmin_cart->error_messages[] = array ('msg_from_this_rule_id' => $vtmin_rules_set[$i]->post_id,  'msg_from_this_rule_occurrence' => $i, 'msg_text'  => $message ); 
-        
+        $vtmin_cart->error_messages[] = array (
+            'msg_from_this_rule_id' => $vtmin_rules_set[$i]->post_id,  
+            'msg_from_this_rule_occurrence' => $i, 
+            'msg_text'  => $message,
+            'msg_is_custom'   => 'no'    //v1.08 
+          );         
+        $this->vtmin_set_custom_msgs_status ('standardMsg');     //v1.08 
+       
       }  //end text message formatting
     
       if ( $vtmin_setup_options['debugging_mode_on'] == 'yes' ){   
@@ -778,7 +813,37 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
      
   } 
       
-      
+   //*************************************  
+   //v1.08 new function 
+   //*************************************    
+   public function vtmin_set_custom_msgs_status ($message_state) { 
+      global $vtmin_cart;
+      switch( $vtmin_cart->error_messages_are_custom ) {  
+        case 'all':
+             if ($message_state == 'standardMsg') {
+                $vtmin_cart->error_messages_are_custom = 'some';
+             }
+          break;
+        case 'some':
+          break;          
+        case 'none':
+             if ($message_state == 'customMsg') {
+                $vtmin_cart->error_messages_are_custom = 'some';
+             }
+          break; 
+        default:  //no state set yet
+             if ($message_state == 'standardMsg') {
+                $vtmin_cart->error_messages_are_custom = 'none';
+             } else {
+                $vtmin_cart->error_messages_are_custom = 'all';
+             }
+          break;                    
+      }
+
+      return;
+   }      
+   //v1.08 end
+   
         
    public function vtmin_product_is_in_inpop_group ($i, $k) { 
       global $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info, $vtmin_setup_options;
