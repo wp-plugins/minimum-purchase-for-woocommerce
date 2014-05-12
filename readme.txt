@@ -22,7 +22,7 @@ Fully tested with WooCommerce 2.1+ .
 
 
 = Now with Custom Messaging! =
-You can enter Custom Messages by Rule 
+You can enter your own Custom Minimum Purchase Messages by Rule 
 
 = Introductory Video =
 [youtube http://www.youtube.com/watch?v=_2fyD57c9Zc]
