@@ -43,7 +43,7 @@ class VTMIN_Rule {
      public  $specChoice_in_selection;
      public  $anyChoice_max;
      
-     //mminimum amount
+     //minimum amount
      public  $amtSelected;
      public  $amtSelected_selection;
      public  $minimum_amt;

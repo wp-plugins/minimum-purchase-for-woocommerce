@@ -229,18 +229,14 @@ Parent Plugin Integration
   } 
 
 
-  function vtmin_debug_options(){
-    global $vmin_setup_options;
-    //************
-    // Turn OFF all php Notices, except in debug mode      v1.0.3 
-    //   Settings switch 'Test Debugging Mode Turned On'
-    //************
-    if ( $vtmin_setup_options['debugging_mode_on'] != 'yes' ){
-      //TURN OFF all php notices, in case this default is not set in user's php ini
-      //error_reporting(E_ALL ^ E_NOTICE);    //report all errors except notices
-      error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED ); //hide notices and warnings  v1.0.5
-    } 
-    //************
+  function vtmin_debug_options(){   //v1.09 updated function
+    global $vtmin_setup_options;
+    if ( ( isset( $vtmin_setup_options['debugging_mode_on'] )) &&
+         ( $vtmin_setup_options['debugging_mode_on'] == 'yes' ) ) {  
+      error_reporting(E_ALL);  
+    }  else {
+      error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED ); 
+    }
   }
   
   //***** v1.0.5  end

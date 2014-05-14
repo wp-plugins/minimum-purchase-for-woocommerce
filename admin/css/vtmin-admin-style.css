@@ -22,7 +22,7 @@
             div#vtmin-errmsg,
             div#vtmin-rule-custom-message,    /* v1.08 */
             div#submitdiv 
-            {display:block;}
+                    {display:block;}
             /* end fix */
 
 

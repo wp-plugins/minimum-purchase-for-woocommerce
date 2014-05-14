@@ -104,7 +104,7 @@ class VTMIN_Rule_update {
 
      //v1.08 begin
      $vtmin_rule->custMsg_text = $_REQUEST['cust-msg-text'];
-     global $vtmin_info;
+     global $vtmin_info; 
      if ( $vtmin_rule->custMsg_text == $vtmin_info['default_full_msg']) {
         $vtmin_rule->custMsg_text = '';   //re-initialize if default msg still there...
      }   

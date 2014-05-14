@@ -3,8 +3,8 @@ Contributors: vark
 Donate link: http://www.varktech.com/woocommerce/minimum-purchase-for-woocommerce/
 Tags: e-commerce, WooCommerce, shop, store, admin, price, pricing, minimum, purchase, limits, checkout
 Requires at least: 3.3
-Tested up to: 3.9
-Stable tag: 1.08
+Tested up to: 3.9.1
+Stable tag: 1.09
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -146,6 +146,10 @@ Please review the following printed and video documentation.
 
 == Changelog ==
 
+= 1.09 - 2014-05-13 =
+* Fix - Bug from 1.08 caused install to fail on some hosts.  Thanks to Adriana for pointing it out.
+* Fix - change add_error to add_notice.
+
 = 1.08 - 2014-05-11 =
 * Enhancement - Custom Messaging! Overrides default messaging for rule.
 * Fix - New rule add - stutter removed
@@ -167,6 +171,10 @@ Please review the following printed and video documentation.
 * Initial Public Release
 
 == Upgrade Notice ==
+
+= 1.09 - 2014-05-13 =
+* Fix - Bug from 1.08 caused install to fail on some hosts.  Thanks to Adriana for pointing it out.
+* Fix - change add_error to add_notice.
 
 = 1.08 - 2014-05-11 =
 * Enhancement - Custom Messaging! Overrides default messaging for rule.

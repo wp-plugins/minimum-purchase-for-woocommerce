@@ -23,10 +23,11 @@ class VTMIN_Parent_Definitions {
     //html default selector locations in checkout where error message will display before.
     define('VTMIN_CHECKOUT_PRODUCTS_SELECTOR_BY_PARENT',    '.shop_table');        // PRODUCTS TABLE on BOTH cart page and checkout page
     define('VTMIN_CHECKOUT_ADDRESS_SELECTOR_BY_PARENT',     '#customer_details');      //  address area on checkout page    default = on
-
+        
+    error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED ); // v1.0.9
 
     global $vtmin_info;      
-    $default_full_msg   =  __('Enter Custom Message', 'vtmin') .'&nbsp;&nbsp;&nbsp;'. __('(optional)', 'vtmin');   //v1.08
+    $default_full_msg   =  __('Enter Custom Message (optional)', 'vtmin');   //v1.08 fixed v1.09
     $vtmin_info = array(                                                                    
       	'parent_plugin' => 'woo',
       	'parent_plugin_taxonomy' => 'product_cat',

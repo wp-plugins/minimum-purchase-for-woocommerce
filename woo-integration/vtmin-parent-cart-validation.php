@@ -64,11 +64,11 @@ class VTMIN_Parent_Cart_Validation {
   *************************************************** */
 	public function vtmin_woo_apply_checkout_cntl(){
     global $vtmin_cart, $vtmin_cart_item, $vtmin_rules_set, $vtmin_rule, $vtmin_info, $woocommerce;
-        
+    vtmin_debug_options();  //v1.09    
     //input and output to the apply_rules routine in the global variables.
     //    results are put into $vtmin_cart
     if ( $vtmin_cart->error_messages_processed == 'yes' ) {  
-      $woocommerce->add_error(  __('Minimum Purchase error found.', 'vtmin') );  //supplies an error msg and prevents payment from completing 
+      wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), $notice_type = 'error' );   //v1.09
       return;
     }
     
@@ -88,7 +88,7 @@ class VTMIN_Parent_Cart_Validation {
             break;           
           default:  //'none' / no state set yet
                $this->vtmin_display_standard_messages();
-               $woocommerce->add_error(  __('Minimum Purchase error found.', 'vtmin') );  //supplies an error msg and prevents payment from completing 
+               wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), $notice_type = 'error' );   //v1.09 
             break;                    
         }
 
@@ -118,7 +118,7 @@ class VTMIN_Parent_Cart_Validation {
     
     for($i=0; $i < sizeof($vtmin_cart->error_messages); $i++) { 
        if ($vtmin_cart->error_messages[$i]['msg_is_custom'] == 'yes') {  //v1.08 ==>> show custom messages here...
-          $woocommerce->add_error( $vtmin_cart->error_messages[$i]['msg_text'] ); 
+          wc_add_notice( $vtmin_cart->error_messages[$i]['msg_text'], $notice_type = 'error' );   //v1.09 
        } //end if
     }  //end 'for' loop    
   }   

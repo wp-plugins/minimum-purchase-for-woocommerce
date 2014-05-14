@@ -485,7 +485,7 @@ function vtmin_initialize_options() {
 		'vtmin_setup_options_page'		// Page on which to add this section of options
 	);
 	
- /*  
+ /* v1.07 
     add_settings_field(	         //opt6
 		'use_this_currency_sign',						// ID used to identify the field throughout the theme
 		__( 'Select a Currency Sign', 'vtmin' ),			// The label to the left of the option interface element
@@ -739,7 +739,7 @@ function vtmin_error_in_table_format_callback() {   //opt1
   
 	echo $html;
 }
-/*
+/*  v1.07
 function vtmin_currency_sign_callback() {    //opt6
   $options = get_option( 'vtmin_setup_options' );
   $html = '<select id="currency_sign" name="vtmin_setup_options[use_this_currency_sign]">';
