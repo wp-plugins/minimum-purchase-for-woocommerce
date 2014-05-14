@@ -195,7 +195,7 @@
 
                            
                            //v1.08 begin 
-                            /*     
+                                 
                                  //If the saved msg = the default, user hasn't entered a msg, make it italic!
                                  if ($("#cust-msg-text").val() == $("#fullMsg").val() ) {
                                    jQuery('#cust-msg-text').css('color', '#666 !important').css("font-style","italic");                                                     
@@ -234,7 +234,7 @@
                                   jQuery(this).css("color","#666666").css("font-style","italic");
                             			}                    			
                             		});          
-                            */
+                            
                            //v1.08 end
 
 
