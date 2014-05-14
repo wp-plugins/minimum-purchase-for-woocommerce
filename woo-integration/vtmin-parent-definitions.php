@@ -26,7 +26,7 @@ class VTMIN_Parent_Definitions {
 
 
     global $vtmin_info;      
-    $default_full_msg   =  __('Enter Custom Message', 'vtmin');   //v1.08
+    $default_full_msg   =  __('Enter Custom Message', 'vtmin') .'&nbsp;&nbsp;&nbsp;'. __('(optional)', 'vtmin');   //v1.08
     $vtmin_info = array(                                                                    
       	'parent_plugin' => 'woo',
       	'parent_plugin_taxonomy' => 'product_cat',
