@@ -67,10 +67,13 @@ class VTMIN_Parent_Cart_Validation {
     vtmin_debug_options();  //v1.09    
     //input and output to the apply_rules routine in the global variables.
     //    results are put into $vtmin_cart
+    
+    /* v1.09.1 cart not there yet... 
     if ( $vtmin_cart->error_messages_processed == 'yes' ) {  
-      wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), $notice_type = 'error' );   //v1.09
+      wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), $notice_type = 'error' );   //supplies an error msg and prevents payment from completing   v1.09
       return;
     }
+    */
     
      $vtmin_apply_rules = new VTMIN_Apply_Rules;   
     
@@ -88,7 +91,15 @@ class VTMIN_Parent_Cart_Validation {
             break;           
           default:  //'none' / no state set yet
                $this->vtmin_display_standard_messages();
-               wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), $notice_type = 'error' );   //v1.09 
+              //v1.09.1 begin
+              $current_version =  WOOCOMMERCE_VERSION;
+              if( (version_compare(strval('2.1.0'), strval($current_version), '>') == 1) ) {   //'==1' = 2nd value is lower     
+                $woocommerce->add_error(  __('Minimum Purchase error found.', 'vtmin') );  //supplies an error msg and prevents payment from completing 
+              } else {
+               //added in woo 2.1
+                wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), $notice_type = 'error' );   //supplies an error msg and prevents payment from completing 
+              } 
+              //v1.09.1  end                
             break;                    
         }
 
@@ -118,7 +129,15 @@ class VTMIN_Parent_Cart_Validation {
     
     for($i=0; $i < sizeof($vtmin_cart->error_messages); $i++) { 
        if ($vtmin_cart->error_messages[$i]['msg_is_custom'] == 'yes') {  //v1.08 ==>> show custom messages here...
-          wc_add_notice( $vtmin_cart->error_messages[$i]['msg_text'], $notice_type = 'error' );   //v1.09 
+          //v1.09.1 begin
+          $current_version =  WOOCOMMERCE_VERSION;
+          if( (version_compare(strval('2.1.0'), strval($current_version), '>') == 1) ) {   //'==1' = 2nd value is lower     
+            $woocommerce->add_error(  $vtmin_cart->error_messages[$i]['msg_text'] );  //supplies an error msg and prevents payment from completing 
+          } else {
+           //added in woo 2.1
+            wc_add_notice( $vtmin_cart->error_messages[$i]['msg_text'], $notice_type = 'error' );   //supplies an error msg and prevents payment from completing 
+          } 
+          //v1.09.1  end          
        } //end if
     }  //end 'for' loop    
   }   

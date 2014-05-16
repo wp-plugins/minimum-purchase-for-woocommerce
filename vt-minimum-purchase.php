@@ -3,10 +3,9 @@
 Plugin Name: VarkTech Minimum Purchase for WooCommerce
 Plugin URI: http://varktech.com
 Description: An e-commerce add-on for WooCommerce, supplying minimum purchase functionality.
-Version: 1.09
+Version: 1.09.1
 Author: Vark
 Author URI: http://varktech.com
-Network: true
 */
 
 
@@ -25,8 +24,8 @@ class VTMIN_Controller{
 	
 	public function __construct(){    
    
-		define('VTMIN_VERSION',                               '1.09');
-    define('VTMIN_LAST_UPDATE_DATE',                      '2014-05-13');
+		define('VTMIN_VERSION',                               '1.09.1');
+    define('VTMIN_LAST_UPDATE_DATE',                      '2014-05-16');
     define('VTMIN_DIRNAME',                               ( dirname( __FILE__ ) ));
     define('VTMIN_URL',                                   plugins_url( '', __FILE__ ) );
     define('VTMIN_EARLIEST_ALLOWED_WP_VERSION',           '3.3');   //To pick up wp_get_object_terms fix, which is required for vtmin-parent-functions.php

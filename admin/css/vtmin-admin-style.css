@@ -435,7 +435,7 @@
             	
             }            
             #minor-publishing-actions input, #major-publishing-actions input, #minor-publishing-actions .preview {
-              height: 20px !important;
+              height: 30px !important;
               min-width: 160px !important;
               text-align: center;
             }

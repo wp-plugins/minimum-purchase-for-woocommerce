@@ -38,7 +38,20 @@ function vtmin_add_admin_menu_setup_items() {
     		array( &$this, 'vtmin_pro_upgrade_cntl' ) 				// The callback function used to render the options for this submenu item
     	);
   } 
-  
+
+  //v1.09.1 begin
+  //Add a DUPLICATE custom tax URL to be in the main Pricing Deals menu as well as in the PRODUCT menu
+  //post_type=product => PARENT plugin post_type
+    add_submenu_page(
+		'edit.php?post_type=vtmin-rule',	// The ID of the top-level menu page to which this submenu item belongs
+		__( 'Minimum Purchase Categories', 'vtmin' ), // The value used to populate the browser's title bar when the menu page is active                           
+		__( 'Minimum Purchase Categories', 'vtmin' ),					// The label of this submenu item displayed in the menu
+		'administrator',					// What roles are able to access this submenu item
+		'edit-tags.php?taxonomy=vtmin_rule_category&post_type=product',	// The slug used to represent this submenu item
+    //                                          PARENT PLUGIN POST TYPE      
+		''  				// NO CALLBACK FUNCTION REQUIRED
+	);
+  //v1.09.1 end  
 } 
 
 function vtmin_pro_upgrade_cntl() {
