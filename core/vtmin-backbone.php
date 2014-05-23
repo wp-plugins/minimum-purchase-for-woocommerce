@@ -70,8 +70,8 @@ class VTMIN_Backbone{
 		)
 	);
  
-//	$role = get_role( 'administrator' );    //v1.09.1 
-//	$role->add_cap( 'read_vtmin-rule' );      //v1.09.1 
+//	$role = get_role( 'administrator' );    //v1.09.1 removed for conflict
+//	$role->add_cap( 'read_vtmin-rule' );      //v1.09.1 removed for conflict 
 }
 
   public function vtmin_add_dummy_rule_category () {

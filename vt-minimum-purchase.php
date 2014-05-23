@@ -3,7 +3,7 @@
 Plugin Name: VarkTech Minimum Purchase for WooCommerce
 Plugin URI: http://varktech.com
 Description: An e-commerce add-on for WooCommerce, supplying minimum purchase functionality.
-Version: 1.09.1
+Version: 1.09.2
 Author: Vark
 Author URI: http://varktech.com
 */
@@ -24,13 +24,15 @@ class VTMIN_Controller{
 	
 	public function __construct(){    
    
-		define('VTMIN_VERSION',                               '1.09.1');
-    define('VTMIN_LAST_UPDATE_DATE',                      '2014-05-16');
+		define('VTMIN_VERSION',                               '1.09.2');
+    define('VTMIN_MINIMUM_PRO_VERSION',                   '1.08'); //V1.09.2  
+    define('VTMIN_LAST_UPDATE_DATE',                      '2014-05-23');
     define('VTMIN_DIRNAME',                               ( dirname( __FILE__ ) ));
     define('VTMIN_URL',                                   plugins_url( '', __FILE__ ) );
     define('VTMIN_EARLIEST_ALLOWED_WP_VERSION',           '3.3');   //To pick up wp_get_object_terms fix, which is required for vtmin-parent-functions.php
     define('VTMIN_EARLIEST_ALLOWED_PHP_VERSION',          '5');
     define('VTMIN_PLUGIN_SLUG',                           plugin_basename(__FILE__));
+    define('VTMIN_PRO_PLUGIN_NAME',                      'VarkTech Minimum Purchase Pro for WooCommerce');  //V1.09.2 
     
     require ( VTMIN_DIRNAME . '/woo-integration/vtmin-parent-definitions.php');
    
@@ -96,7 +98,14 @@ class VTMIN_Controller{
         
         require ( VTMIN_DIRNAME . '/admin/vtmin-checkbox-classes.php');
         require ( VTMIN_DIRNAME . '/admin/vtmin-rules-delete.php');
-     
+        
+        //v1.09.2 begin
+        if ( (defined('VTMIN_PRO_DIRNAME')) &&
+             (version_compare(VTMIN_PRO_VERSION, VTMIN_MINIMUM_PRO_VERSION) < 0) ) {    //'<0' = 1st value is lower  
+          add_action( 'admin_notices',array(&$this, 'vtmin_admin_notice_version_mismatch') );            
+        }
+        //v1.09.2 end 
+                
     } 
     
     //unconditional branch for these resources needed for WOOCommerce, at "place order" button time
@@ -330,6 +339,21 @@ class VTMIN_Controller{
     }
      
   }
+
+   //v1.09.2 begin                          
+   public function vtmin_admin_notice_version_mismatch() {
+      $message  =  '<strong>' . __('Please also update plugin: ' , 'vtmin') . ' &nbsp;&nbsp;'  .VTMIN_PRO_PLUGIN_NAME . '</strong>' ;
+      $message .=  '<br>&nbsp;&nbsp;&bull;&nbsp;&nbsp;' . __('Your Pro Version = ' , 'vtmin') .VTMIN_PRO_VERSION. ' &nbsp;&nbsp;' . __(' The Minimum Required Pro Version = ' , 'vtmin') .VTMIN_MINIMUM_PRO_VERSION ;      
+      $message .=  '<br>&nbsp;&nbsp;&bull;&nbsp;&nbsp;' . __('Please delete the old Pro plugin from your installation via ftp.'  , 'vtmin');
+      $message .=  '<br>&nbsp;&nbsp;&bull;&nbsp;&nbsp;' . __('Go to ', 'vtmin');
+      $message .=  '<a target="_blank" href="http://www.varktech.com/download-pro-plugins/">Varktech Downloads</a>';
+      $message .=   __(', download and install the newest <strong>'  , 'vtmin') .VTMIN_PRO_PLUGIN_NAME. '</strong>' ;
+      
+      $admin_notices = '<div id="message" class="error fade" style="background-color: #FFEBE8 !important;"><p>' . $message . ' </p></div>';
+      echo $admin_notices;
+      return;    
+  }   
+   //v1.09.2 end    
   
   /* ************************************************
   **   Admin - **Uninstall** Hook and cleanup

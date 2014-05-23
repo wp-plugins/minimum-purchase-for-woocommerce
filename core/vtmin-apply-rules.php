@@ -287,11 +287,16 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
         
     if ( $vtmin_setup_options['debugging_mode_on'] == 'yes' ){   
       global $woocommerce; 
-      echo '<pre> $woocommerce= '         .print_r($woocommerce, true).'</pre>' ;        
-      echo '<pre> $vtmin_rules_set= '     .print_r($vtmin_rules_set, true).'</pre>' ; 
-      echo '<pre> $vtmin_cart= '          .print_r($vtmin_cart, true).'</pre>' ;
-      echo '<pre> $vtmin_setup_options= ' .print_r($vtmin_setup_options, true).'</pre>' ;
-      echo '<pre> $vtmin_info= '          .print_r($vtmin_info, true).'</pre>' ;    
+      error_log( print_r(  '$vtmin_info', true ) );
+      error_log( var_export($vtmin_info, true ) );
+      error_log( print_r(  '$vtmin_rules_set', true ) );
+      error_log( var_export($vtmin_rules_set, true ) );
+      error_log( print_r(  '$vtmin_cart', true ) );
+      error_log( var_export($vtmin_cart, true ) );
+      error_log( print_r(  '$vtmin_setup_options', true ) );
+      error_log( var_export($vtmin_setup_options, true ) );
+      error_log( print_r(  '$woocommerce', true ) );
+      error_log( var_export($woocommerce, true ) );    
     }  
     
      
@@ -801,7 +806,7 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
         $this->vtmin_set_custom_msgs_status ('standardMsg');     //v1.08 
        
       }  //end text message formatting
-    
+      /*
       if ( $vtmin_setup_options['debugging_mode_on'] == 'yes' ){   
         echo '$message'; echo '<pre>'.print_r($message, true).'</pre>' ;
         echo '$vtmin_rules_set[$i]->errProds_qty = '; echo '<pre>'.print_r($vtmin_rules_set[$i]->errProds_qty, true).'</pre>' ;
@@ -809,7 +814,7 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
         echo '$vtmin_rules_set[$i]->errProds_names = '; echo '<pre>'.print_r($vtmin_rules_set[$i]->errProds_names, true).'</pre>' ;
         echo '$vtmin_rules_set[$i]->errProds_cat_names = '; echo '<pre>'.print_r($vtmin_rules_set[$i]->errProds_cat_names, true).'</pre>' ;   
       } 
-
+      */
      
   } 
       
@@ -865,12 +870,14 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
     	global $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info, $vtmin_setup_options;     
       if ( sizeof($vtmin_rules_set[$i]->role_in_checked) > 0 ) {
             if (in_array($this->vtmin_get_current_user_role(), $vtmin_rules_set[$i]->role_in_checked )) {   //if role is in previously checked_list
+                  /*
                   if ( $vtmin_setup_options['debugging_mode_on'] == 'yes' ){ 
                     echo 'current user role= <pre>'.print_r($this->vtmin_get_current_user_role(), true).'</pre>' ;
                     echo 'rule id= <pre>'.print_r($vtmin_rules_set[$i]->post_id, true).'</pre>' ;  
                     echo 'role_in_checked= <pre>'.print_r($vtmin_rules_set[$i]->role_in_checked, true).'</pre>' ; 
                     echo 'i= '.$i . '<br>'; echo 'k= '.$k . '<br>';
                   }
+                  */
               return true;                                
             } 
       } 
