@@ -161,6 +161,22 @@ class VTMIN_Rules_UI {
             display:none;
            }
            #vtmin-pop-in-cntl {margin-bottom:15px;}
+           /*v1.06 begin*/
+           .pro-anchor {
+              border: 1px solid #CCCCCC;
+              clear: both;
+              color: #000000;
+              float: left;
+              font-size: 14px;
+              margin-bottom: 10px;
+              margin-left: 2%;
+              margin-top: 20px;
+              padding: 5px 10px;
+              text-decoration: none;
+              width: auto;        
+           }
+           #inpopDescrip-more-help {color: #0074A2 !important;font-size: 15px;}
+           /*v1.06 end*/
         </style>
                    
         <input type="hidden" id="vtmin_nonce" name="vtmin_nonce" value="<?php echo $vtminNonce; ?>" />
@@ -173,13 +189,7 @@ class VTMIN_Rules_UI {
             Minimum Amount rules define a candidate group within the cart. The Free version of the plugin
             applies only to logged-in user membership status.', 'vtmin') ?>           
             </p>
-            <a id="inpopDescrip-more" class="help-anchor" href="javascript:void(0);">Pro Version - <span id="inpopDescrip-more-help">More Info</span></a>
-            <p id="inpopDescrip-descrip" class="help-text"> <?php _e('The Pro version has other options available.
-            You can choose to apply the rule to the entire contents of the cart, or you can also have the rule 
-            look only at those products in a particular category or category groups, or have the rule apply to a 
-            single, specified product. ', 'vtmin') ?> 
-            <a  href=" <?php echo VTMIN_PURCHASE_PRO_VERSION_BY_PARENT ; ?> "  title="Access Plugin Documentation"> Upgrade to Pro Version</a>          
-            </p>
+            <?php //v1.06 msg moved below?>
         </div>
 
         
@@ -243,7 +253,7 @@ class VTMIN_Rules_UI {
             <?php _e('NB: If **single** is chosen, the value of "All" is applied to the Rule Application Method, regardless of what is chosen below.', 'vtmin')?> 
            </p>
         </div>        
-         
+
         <div id="inpop-varProdID-cntl">            
           <a id="inpop-varProdID-more" class="help-anchor" href="javascript:void(0);">Single Product with Variations - <span id="pop-in-more-help">More Info</span></a>
          <p id="inpop-varProdID-descrip" class="help-text"><?php _e('When "Single Product with Variations" is chosen, at least one variation must be selected.
@@ -299,6 +309,11 @@ class VTMIN_Rules_UI {
           ?>
            </div>  <?php//end variations-in ?>
         </div>  <?php //end inpopVarProdID ?>       
+
+        
+        <?php //v1.06 moved here, changed msg?>
+        <a id="" class="pro-anchor" target="_blank"  href="<?php echo VTMIN_PURCHASE_PRO_VERSION_BY_PARENT ; ?>">( Greyed-out Options are available in the <span id="inpopDescrip-more-help">Pro Version</span> &nbsp;)</a>
+         
 
        <div class="<?php //echo $groupPop_vis ?> " id="vtmin-pop-in-cntl">                                                  
          <a id="pop-in-more" class="help-anchor" href="javascript:void(0);">Selection Groups - <span id="pop-in-more-help">More Info</span></a>
