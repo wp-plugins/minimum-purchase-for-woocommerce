@@ -24,6 +24,11 @@ Fully tested with WooCommerce 2.1+ .
 = Now with Custom Messaging! =
 You can enter your own Custom Minimum Purchase Messages by Rule 
 
+= Unparalleled Customer Service =
+
+*   Customer Service is as important as the plugin functionality itself
+*   [Support](http://www.varktech.com/support/) is open 7 days for questions and 1-on-1 assistance.
+
 = Introductory Video =
 [youtube http://www.youtube.com/watch?v=_2fyD57c9Zc]
 
