@@ -235,7 +235,7 @@ Parent Plugin Integration
          ( $vtmin_setup_options['debugging_mode_on'] == 'yes' ) ) {  
       error_reporting(E_ALL);  
     }  else {
-      error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED ); 
+      error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING ^ E_DEPRECATED ^ E_STRICT ^ E_USER_DEPRECATED ^ E_USER_NOTICE ^ E_USER_WARNING ^ E_RECOVERABLE_ERROR );    //only allow FATAL error types
     }
   }
   
