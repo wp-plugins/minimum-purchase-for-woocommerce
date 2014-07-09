@@ -19,7 +19,10 @@ Author URI: http://varktech.com
    $vtmin_cart_item;
    $vtmin_setup_options;
 //   $vtmin_error_msg;
-     
+   
+   //initial setup only, overriden later in function vtprd_debug_options
+   error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR); //v1.09.2
+         
 class VTMIN_Controller{
 	
 	public function __construct(){    
