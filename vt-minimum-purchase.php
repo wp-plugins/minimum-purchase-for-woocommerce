@@ -21,7 +21,7 @@ Author URI: http://varktech.com
 //   $vtmin_error_msg;
    
    //initial setup only, overriden later in function vtprd_debug_options
-   error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR); //v1.09.2
+error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR); //v1.09.2
          
 class VTMIN_Controller{
 	
@@ -169,6 +169,9 @@ class VTMIN_Controller{
      ***************************************************************** */
       
       global $post, $vtmin_rules_set;
+	  if( !isset( $post ) ) {  //v1.09.3  
+        return;
+      } 
       if ( !( 'vtmin-rule' == $post->post_type )) {
         return;
       }  
@@ -220,9 +223,12 @@ class VTMIN_Controller{
  *************************************************** */
 	public function vtmin_admin_delete_rule(){
      global $post, $vtmin_rules_set; 
-     if ( !( 'vtmin-rule' == $post->post_type ) ) {
-      return;
-     }        
+	  if( !isset( $post ) ) {  //v1.09.3  
+        return;
+      } 
+      if ( !( 'vtmin-rule' == $post->post_type )) {
+        return;
+      }         
 
      if ( !current_user_can( 'delete_posts', 'vtmin-rule' ) )  {
           return;
@@ -238,9 +244,12 @@ class VTMIN_Controller{
   *************************************************** */   
 	public function vtmin_admin_trash_rule(){
      global $post, $vtmin_rules_set; 
-     if ( !( 'vtmin-rule' == $post->post_type ) ) {
-      return;
-     }        
+	  if( !isset( $post ) ) {  //v1.09.3  
+        return;
+      } 
+      if ( !( 'vtmin-rule' == $post->post_type )) {
+        return;
+      }          
   
      if ( !current_user_can( 'delete_posts', 'vtmin-rule' ) )  {
           return;
@@ -261,9 +270,12 @@ class VTMIN_Controller{
  *************************************************** */   
 	public function vtmin_admin_untrash_rule(){
      global $post, $vtmin_rules_set; 
-     if ( !( 'vtmin-rule' == $post->post_type ) ) {
-      return;
-     }        
+	  if( !isset( $post ) ) {  //v1.09.3  
+        return;
+      } 
+      if ( !( 'vtmin-rule' == $post->post_type )) {
+        return;
+      }          
 
      if ( !current_user_can( 'delete_posts', 'vtmin-rule' ) )  {
           return;

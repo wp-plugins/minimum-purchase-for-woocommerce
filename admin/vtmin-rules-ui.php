@@ -71,14 +71,16 @@ class VTMIN_Rules_UI {
         $post_id =  $post->ID;
         $vtmin_rules_set   = get_option( 'vtmin_rules_set' ) ;
         $sizeof_rules_set = sizeof($vtmin_rules_set);
-        for($i=0; $i < $sizeof_rules_set; $i++) { 
-           if ($vtmin_rules_set[$i]->post_id == $post_id) {
-              $vtmin_rule = $vtmin_rules_set[$i];  //load vtmin-rule               
-              $found_rule = true;
-              $found_rule_index = $i; 
-              $i =  $sizeof_rules_set;
-           }
-        }
+        if ($sizeof_rules_set > 0)  {   //1.09.3 
+          for($i=0; $i < $sizeof_rules_set; $i++) { 
+             if ($vtmin_rules_set[$i]->post_id == $post_id) {
+                $vtmin_rule = $vtmin_rules_set[$i];  //load vtmin-rule               
+                $found_rule = true;
+                $found_rule_index = $i; 
+                $i =  $sizeof_rules_set;
+             }
+          }
+        }                             //1.09.3 
       } 
 
       if (!$found_rule) {
@@ -189,7 +191,7 @@ class VTMIN_Rules_UI {
             Minimum Amount rules define a candidate group within the cart. The Free version of the plugin
             applies only to logged-in user membership status.', 'vtmin') ?>           
             </p>
-            <?php //v1.06 msg moved below?>
+            <?php //v1.06 msg moved below ?>
         </div>
 
         
