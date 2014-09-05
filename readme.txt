@@ -18,7 +18,7 @@ The Minimum Purchase plugin for WooCommerce gives you the ability to set up mini
 
 If a purchase in your store fails a minimum purchase rule, an error message appears at the top of the checkout page, identifying the error situation and rule requirements.  The customer must resolve the error, before the purchase can be completed.   
 
-Fully tested with WooCommerce 2.1+ .
+Fully tested with WooCommerce 2.2+ .
 
 
 = Now with Custom Messaging! =
