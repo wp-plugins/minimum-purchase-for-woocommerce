@@ -4,7 +4,7 @@ Donate link: http://www.varktech.com/woocommerce/minimum-purchase-for-woocommerc
 Tags: e-commerce, WooCommerce, shop, store, admin, price, pricing, minimum, purchase, limits, checkout
 Requires at least: 3.3
 Tested up to: 4.1
-Stable tag: 1.09.2
+Stable tag: 1.09.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -151,6 +151,10 @@ Please review the following printed and video documentation.
 
 == Changelog ==
 
+= 1.09.3 - 2014-12-28 =
+* Enhancement - pick up unit price from line subtotal only - 
+                will include active price, all taxation and price adjustments from other plugins
+
 = 1.09.2 - 2014-05-23 =
 * Enhancement - Update Nag additional message.
 
@@ -182,6 +186,10 @@ Please review the following printed and video documentation.
 * Initial Public Release
 
 == Upgrade Notice ==
+
+= 1.09.3 - 2014-12-28 =
+* Enhancement - pick up unit price from line subtotal only - 
+                will include active price, all taxation and price adjustments from other plugins
 
 = 1.09.2 - 2014-05-23 =
 * Enhancement - Update Nag additional message.

@@ -3,7 +3,7 @@
 Plugin Name: VarkTech Minimum Purchase for WooCommerce
 Plugin URI: http://varktech.com
 Description: An e-commerce add-on for WooCommerce, supplying minimum purchase functionality.
-Version: 1.09.2
+Version: 1.09.3
 Author: Vark
 Author URI: http://varktech.com
 */
@@ -27,9 +27,9 @@ class VTMIN_Controller{
 	
 	public function __construct(){    
    
-		define('VTMIN_VERSION',                               '1.09.2');
+		define('VTMIN_VERSION',                               '1.09.3');
     define('VTMIN_MINIMUM_PRO_VERSION',                   '1.08'); //V1.09.2  
-    define('VTMIN_LAST_UPDATE_DATE',                      '2014-05-23');
+    define('VTMIN_LAST_UPDATE_DATE',                      '2014-12-28');
     define('VTMIN_DIRNAME',                               ( dirname( __FILE__ ) ));
     define('VTMIN_URL',                                   plugins_url( '', __FILE__ ) );
     define('VTMIN_EARLIEST_ALLOWED_WP_VERSION',           '3.3');   //To pick up wp_get_object_terms fix, which is required for vtmin-parent-functions.php
@@ -169,7 +169,7 @@ class VTMIN_Controller{
      ***************************************************************** */
       
       global $post, $vtmin_rules_set;
-	  if( !isset( $post ) ) {  //v1.09.3  
+	    if( !isset( $post ) ) {  //v1.09.3  
         return;
       } 
       if ( !( 'vtmin-rule' == $post->post_type )) {
@@ -223,7 +223,7 @@ class VTMIN_Controller{
  *************************************************** */
 	public function vtmin_admin_delete_rule(){
      global $post, $vtmin_rules_set; 
-	  if( !isset( $post ) ) {  //v1.09.3  
+	    if( !isset( $post ) ) {  //v1.09.3  
         return;
       } 
       if ( !( 'vtmin-rule' == $post->post_type )) {
@@ -244,7 +244,7 @@ class VTMIN_Controller{
   *************************************************** */   
 	public function vtmin_admin_trash_rule(){
      global $post, $vtmin_rules_set; 
-	  if( !isset( $post ) ) {  //v1.09.3  
+	    if( !isset( $post ) ) {  //v1.09.3  
         return;
       } 
       if ( !( 'vtmin-rule' == $post->post_type )) {
@@ -270,7 +270,7 @@ class VTMIN_Controller{
  *************************************************** */   
 	public function vtmin_admin_untrash_rule(){
      global $post, $vtmin_rules_set; 
-	  if( !isset( $post ) ) {  //v1.09.3  
+	    if( !isset( $post ) ) {  //v1.09.3  
         return;
       } 
       if ( !( 'vtmin-rule' == $post->post_type )) {

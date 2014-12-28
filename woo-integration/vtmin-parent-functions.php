@@ -12,7 +12,10 @@ Parent Plugin Integration
       // from Woocommerce/templates/cart/mini-cart.php  and  Woocommerce/templates/checkout/review-order.php
         
       if (sizeof($woocommerce->cart->get_cart())>0) {
-					$vtmin_cart = new VTMIN_Cart;  
+      
+					$woocommerce->cart->calculate_totals(); //v1.09.3 calculation includes generating line subtotals, used below
+          
+          $vtmin_cart = new VTMIN_Cart;  
           foreach ( $woocommerce->cart->get_cart() as $cart_item_key => $cart_item ) {
 						$_product = $cart_item['data'];
 						if ($_product->exists() && $cart_item['quantity']>0) {
@@ -41,14 +44,24 @@ Parent Plugin Integration
   
               
               $vtmin_cart_item->quantity      = $cart_item['quantity'];
-              $vtmin_cart_item->unit_price    = get_option( 'woocommerce_display_cart_prices_excluding_tax' ) == 'yes' || $woocommerce->customer->is_vat_exempt() ? $_product->get_price_excluding_tax() : $_product->get_price();
+              
+              //v1.09.3 commented unit price
+              //$vtmin_cart_item->unit_price    = get_option( 'woocommerce_display_cart_prices_excluding_tax' ) == 'yes' || $woocommerce->customer->is_vat_exempt() ? $_product->get_price_excluding_tax() : $_product->get_price();
               
               /*
               $quantity = 1; //v1.08 vat fix
               $vtmin_cart_item->unit_price    = get_option( 'woocommerce_display_cart_prices_excluding_tax' ) == 'yes' || $woocommerce->customer->is_vat_exempt() ? $_product->get_price_excluding_tax() : $_product->get_price_including_tax( $quantity ); //$_product->get_price();   //v1.08 vat fix
               */
               
-              $vtmin_cart_item->total_price   = $vtmin_cart_item->quantity * $vtmin_cart_item->unit_price;
+              //v1.09.3 begin
+              //  pick up unit price from line subtotal only - 
+              //  will include all taxation and price adjustments from other plugins
+              
+              //$vtmin_cart_item->total_price   = $vtmin_cart_item->quantity * $vtmin_cart_item->unit_price;
+              $vtmin_cart_item->total_price = $cart_item['line_subtotal'];
+              $vtmin_cart_item->unit_price  = $cart_item['line_subtotal'] / $cart_item['quantity'];              
+              //v1.09.3 end
+              
               /*  *********************************
               ***  JUST the cat *ids* please...
               ************************************ */
