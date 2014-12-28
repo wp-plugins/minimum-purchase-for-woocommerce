@@ -895,7 +895,8 @@ function vtmin_validate_setup_input( $input ) {
         $output = get_option( 'vtmin_setup_options' );  //fix 2-13-2013 - initialize output, otherwise all Options go away...
       break;
     default:   //standard update button hit...                 
-        $output = array();
+        //$output = array();
+        $output = get_option( 'vtmin_setup_options' );  //v1.06
       	foreach( $input as $key => $value ) {
       		if( isset( $input[$key] ) ) {
       			$output[$key] = strip_tags( stripslashes( $input[ $key ] ) );	
