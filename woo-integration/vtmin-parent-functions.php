@@ -58,8 +58,30 @@ Parent Plugin Integration
               //  will include all taxation and price adjustments from other plugins
               
               //$vtmin_cart_item->total_price   = $vtmin_cart_item->quantity * $vtmin_cart_item->unit_price;
-              $vtmin_cart_item->total_price = $cart_item['line_subtotal'];
-              $vtmin_cart_item->unit_price  = $cart_item['line_subtotal'] / $cart_item['quantity'];              
+    //          $vtmin_cart_item->total_price = $cart_item['line_subtotal'];
+    //          $vtmin_cart_item->unit_price  = $cart_item['line_subtotal'] / $cart_item['quantity'];
+
+              if ( ( get_option( 'woocommerce_calc_taxes' ) == 'no' ) ||
+                   ( get_option( 'woocommerce_prices_include_tax' ) == 'no' ) ) {      
+                 //NO VAT included in price
+                 $vtmin_cart_item->unit_price  =  $cart_item['line_subtotal'] / $cart_item['quantity'];  
+                 $vtmin_cart_item->total_price =  $cart_item['line_subtotal'];                                                
+              } else {
+                 
+                 //v1.0.7.4 begin
+                 //TAX included in price in DB, and Woo $cart_item pricing **has already subtracted out the TAX **, so restore the TAX
+                 //  this price reflects the tax situation of the ORIGINAL price - so if the price was originally entered with tax, this will reflect tax
+                 $price           =  $cart_item['line_subtotal']  / $cart_item['quantity'];    
+                 $qty = 1;           
+                 $_tax  = new WC_Tax();                
+                // $product = get_product( $product_id ); 
+                 $product = get_product( $vtmin_cart_item->product_id  );
+                 $tax_rates  = $_tax->get_rates( $product->get_tax_class() );
+        			 	 $taxes      = $_tax->calc_tax( $price  * $qty, $tax_rates, false );
+        				 $tax_amount = $_tax->get_tax_total( $taxes );
+        				 $vtmin_cart_item->unit_price  = round( $price  * $qty + $tax_amount, absint( get_option( 'woocommerce_price_num_decimals' ) ) ); 
+                 $vtmin_cart_item->total_price = ($vtmin_cart_item->unit_price * $cart_item['quantity']);
+               }                             
               //v1.09.3 end
               
               /*  *********************************
