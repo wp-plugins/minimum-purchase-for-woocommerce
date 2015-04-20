@@ -20,7 +20,9 @@ class VTMIN_Parent_Cart_Validation {
     //  add actions for early entry into Woo's 3 shopping cart-related pages, and the "place order" button -
 
     //if "place order" button hit, this action catches and errors as appropriate
-    add_action( 'woocommerce_before_checkout_process', array(&$this, 'vtmin_woo_apply_checkout_cntl') );   
+    add_action( 'woocommerce_before_checkout_process', array(&$this, 'vtmin_woo_before_checkout_process') );  //v1.0.9.4 
+    
+//    add_action( 'woocommerce_cart_updated',            array(&$this, 'vtmin_woo_apply_checkout_cntl') ); //v1.0.9.4    
     
     
     $vtmin_info['woo_cart_url']      =  $this->vtmin_woo_get_url('cart'); 
@@ -57,12 +59,17 @@ class VTMIN_Parent_Cart_Validation {
   }    
  /*  =============+++++++++++++++++++++++++++++++++++++++++++++++++++++++++    */
     
-    
+        
+  //v1.0.9.4 new function
+  public function vtmin_woo_before_checkout_process() { 
+    $checkout_button_depressed = true;
+    $this->vtmin_woo_apply_checkout_cntl($checkout_button_depressed);
+  }      
            
   /* ************************************************
   **   Application - Apply Rules at E-Commerce Checkout
   *************************************************** */
-	public function vtmin_woo_apply_checkout_cntl(){
+	public function vtmin_woo_apply_checkout_cntl($checkout_button_depressed = null){  //v1.0.9.4  added passed value
     global $vtmin_cart, $vtmin_cart_item, $vtmin_rules_set, $vtmin_rule, $vtmin_info, $woocommerce;
     vtmin_debug_options();  //v1.09    
     //input and output to the apply_rules routine in the global variables.
@@ -74,7 +81,24 @@ class VTMIN_Parent_Cart_Validation {
       return;
     }
     */
-    
+    //v1.0.9.4 begin
+    if ($checkout_button_depressed) {
+      $skip_the_page_testing = true;
+    } else {
+      
+      $vtmin_info['woo_cart_url']      =  $this->vtmin_woo_get_url('cart'); 
+      $vtmin_info['woo_checkout_url']  =  $this->vtmin_woo_get_url('checkout');
+      $vtmin_info['woo_pay_url']       =  $this->vtmin_woo_get_url('pay');   
+      $vtmin_info['currPageURL']       =  $this->vtmin_currPageURL();
+        
+      if ( in_array($vtmin_info['currPageURL'], array($vtmin_info['woo_cart_url'],$vtmin_info['woo_checkout_url'], $vtmin_info['woo_pay_url'], $vtmin_info['woo_pay_url'] ) ) )  {        
+       $carry_on; 
+      } else {
+        return;
+      } 
+    }
+    //v1.0.9.4 end
+        
      $vtmin_apply_rules = new VTMIN_Apply_Rules;   
     
     //ERROR Message Path
@@ -97,7 +121,10 @@ class VTMIN_Parent_Cart_Validation {
                 $woocommerce->add_error(  __('Minimum Purchase error found.', 'vtmin') );  //supplies an error msg and prevents payment from completing 
               } else {
                //added in woo 2.1
-                wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), $notice_type = 'error' );   //supplies an error msg and prevents payment from completing 
+                wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), 'error' );   //supplies an error msg and prevents payment from completing
+                // wc_add_notice( __('Minimum Purchase error found.', 'vtmin'), $notice_type = 'error' );   //supplies an error msg and prevents payment from completing  
+// wp_die( __('<strong>Looks like</strong>', 'vtmin'), __('VT Minimum Purchase not compatible - WP', 'vtmin'), array('back_link' => true));         
+                
               } 
               //v1.09.1  end                
             break;                    
