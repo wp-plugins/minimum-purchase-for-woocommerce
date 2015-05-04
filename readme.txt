@@ -3,8 +3,8 @@ Contributors: vark
 Donate link: http://www.varktech.com/woocommerce/minimum-purchase-for-woocommerce/
 Tags: e-commerce, WooCommerce, shop, store, admin, price, pricing, minimum, purchase, limits, checkout
 Requires at least: 3.3
-Tested up to: 4.2
-Stable tag: 1.09.4
+Tested up to: 4.2.1
+Stable tag: 1.09.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -151,6 +151,9 @@ Please review the following printed and video documentation.
 
 == Changelog ==
 
+= 1.09.5 - 2015-05-04 =
+* Enhancement - Refactor all messaging to now be all Woo-based
+
 = 1.09.4 - 2015-04-20 =
 * Fix - with WP 4.2, fix needed to prevent checkout button from carrying on when an error situation exists.
 
@@ -189,6 +192,9 @@ Please review the following printed and video documentation.
 * Initial Public Release
 
 == Upgrade Notice ==
+
+= 1.09.5 - 2015-05-04 =
+* Enhancement - Refactor all messaging to now be all Woo-based
 
 = 1.09.3 - 2014-12-28 =
 * Enhancement - pick up unit price from line subtotal only - 
