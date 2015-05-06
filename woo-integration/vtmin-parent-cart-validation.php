@@ -245,7 +245,7 @@ class VTMIN_Parent_Cart_Validation {
             $woocommerce->add_error(  $vtmin_cart->error_messages[$i]['msg_text'] );  //supplies an error msg and prevents payment from completing 
           } else {
            //added in woo 2.1
-            wc_add_notice( $vtmin_cart->error_messages[$i]['msg_text'], $notice_type = 'error' );   //supplies an error msg and prevents payment from completing 
+            wc_add_notice( stripslashes($vtmin_cart->error_messages[$i]['msg_text']), $notice_type = 'error' );   //supplies an error msg and prevents payment from completing 
           } 
           //v1.09.1  end          
        } //end if
