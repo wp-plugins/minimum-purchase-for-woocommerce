@@ -10,8 +10,6 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 This plugin allows you to set up minimum purchase rules for products in your store.  Purchases must meet these rules to proceed to checkout payment.
 
-
-
 == Description ==
 
 The Minimum Purchase plugin for WooCommerce gives you the ability to set up minimum purchase rules for products in your WooCommerce 1.0+ store.  Customer purchases must then meet these rules, to proceed to checkout payment.
