@@ -4,11 +4,13 @@ Donate link: http://www.varktech.com/woocommerce/minimum-purchase-for-woocommerc
 Tags: e-commerce, WooCommerce, shop, store, admin, price, pricing, minimum, purchase, limits, checkout
 Requires at least: 3.3
 Tested up to: 4.2.2
-Stable tag: 1.09.6
+Stable tag: 1.09.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 This plugin allows you to set up minimum purchase rules for products in your store.  Purchases must meet these rules to proceed to checkout payment.
+
+
 
 == Description ==
 
@@ -150,7 +152,10 @@ Please review the following printed and video documentation.
 
 == Changelog ==
 
-= 1.09.6 - 2015-05-04 =
+= 1.09.7 - 2015-05-23 =
+* Fix - Repeating groups 'each' fix
+
+= 1.09.6 - 2015-05-19 =
 * Enhancement - Added variable for repeating groups - min of 6, 12, 18, 24 .... purchases
 
 = 1.09.5 - 2015-05-04 =
@@ -195,7 +200,10 @@ Please review the following printed and video documentation.
 
 == Upgrade Notice ==
 
-= 1.09.6 - 2015-05-04 =
+= 1.09.7 - 2015-05-20 =
+* Fix - Repeating groups each fix
+
+= 1.09.6 - 2015-05-19 =
 * Enhancement - Add variable for repeating groups - min of 6, 12, 18, 24 .... purchases
 
 = 1.09.5 - 2015-05-04 =

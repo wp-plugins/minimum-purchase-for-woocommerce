@@ -72,13 +72,7 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
                $vtmin_rules_set[$i]->specChoice_in_selection = 'all' ; 
             }
             
-            //v1.09.6 begin
-            if ( $this->vtmin_maybe_repeating_groups_error($i) ) {
-              $repeating_groups_error = true;
-            } else {
-              $repeating_groups_error = false;
-            }
-            //v1.09.6 end  
+
                 
             switch( $vtmin_rules_set[$i]->specChoice_in_selection ) {
                case 'all':  //$specChoice_value = 'all'  => total up everything in the population as a unit  
@@ -95,11 +89,14 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
                           $vtmin_rules_set[$i]->rule_requires_cart_action = 'yes';
                         }
                     } 
-                    //v1.09.6 begin
-                    if ( $repeating_groups_error ) {
+                    
+                    //v1.09.7 begin
+                      if ( ( $vtmin_rules_set[$i]->repeatingGroups > 0 ) &&
+                          ( ($vtmin_rules_set[$i]->inpop_qty_total % $vtmin_rules_set[$i]->repeatingGroups) > 0) ) { //if remainder > 0
                       $vtmin_rules_set[$i]->rule_requires_cart_action = 'yes';
                     }
-                    //v1.09.6 end
+                    //v1.09.7 end
+                      
                     if ($vtmin_rules_set[$i]->rule_requires_cart_action == 'yes') {
                        for($k=0; $k < $sizeof_inpop_found_list; $k++) {
                           $this->vtmin_mark_product_as_requiring_cart_action($i,$k);                          
@@ -110,22 +107,38 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
               		  for($k=0; $k < $sizeof_inpop_found_list; $k++) {
                         if ($vtmin_rules_set[$i]->amtSelected_selection == 'currency'){   //price total
                             if ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_total_price'] >= $vtmin_rules_set[$i]->minimum_amt['value']){
-                               $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                                //$vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                                                    
+                                //v1.09.7  begin
+                                  if ( ( $vtmin_rules_set[$i]->repeatingGroups > 0 ) &&
+                                      ( ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_qty'] % $vtmin_rules_set[$i]->repeatingGroups) > 0) ) { 
+                                  $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
+                                } else {
+                                  $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                                }
+                                //v1.09.7  end
+                                                    
                             }  else {
                                $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
                             }
                         }  else {
                             if ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_qty'] >= $vtmin_rules_set[$i]->minimum_amt['value']){
-                               $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                               // $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                                                    
+                                //v1.09.7 begin
+                                  if ( ( $vtmin_rules_set[$i]->repeatingGroups > 0 ) &&
+                                      ( ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_qty'] % $vtmin_rules_set[$i]->repeatingGroups) > 0) ) { 
+                                  $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
+                                } else {
+                                  $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                                }
+                                //v1.09.7 end
+                                                              
                             }  else {
                                $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
                             }
                         }
-                        //v1.09.6 begin
-                        if ( $repeating_groups_error ) {
-                          $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
-                        }
-                        //v1.09.6 end                          
+                        
                     }
                         
                   break;
@@ -135,24 +148,42 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
                     for($k=0; $k < $sizeof_inpop_found_list; $k++) {
                         if ($vtmin_rules_set[$i]->amtSelected_selection == 'currency'){   //price total
                             if ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_total_price'] < $vtmin_rules_set[$i]->minimum['value']){
-                               $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                               //$vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                              
+                              //v1.09.7  begin
+                                if ( ( $vtmin_rules_set[$i]->repeatingGroups > 0 ) &&
+                                    ( ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_qty'] % $vtmin_rules_set[$i]->repeatingGroups) > 0) ) { 
+                                $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
+                                $any_action_cnt++;
+                              } else {
+                                $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                              }
+                              //v1.09.7  end
+                                                                 
                             }  else {
                                $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
                                $any_action_cnt++;
                             }
                         }  else {
                             if ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_qty'] < $vtmin_rules_set[$i]->minimum['value']){
-                               $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                               //$vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                                                   
+                                //v1.09.7  begin
+                                  if ( ( $vtmin_rules_set[$i]->repeatingGroups > 0 ) &&
+                                      ( ($vtmin_rules_set[$i]->inpop_found_list[$k]['prod_qty'] % $vtmin_rules_set[$i]->repeatingGroups) > 0) ) { 
+                                  $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
+                                  $any_action_cnt++;
+                                } else {
+                                  $vtmin_rules_set[$i]->inpop_found_list[$k]['prod_requires_action'] = 'no';
+                                }
+                                //v1.09.7 end
+                                                              
                             }  else {
                                $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
                                $any_action_cnt++;
                             }
                         }
-                        //v1.09.6 begin
-                        if ( $repeating_groups_error ) {
-                          $this->vtmin_mark_product_as_requiring_cart_action($i,$k);
-                        }
-                        //v1.09.6 end                         
+                        
                         //if 'any' limit reached, end the loop, don't mark any mor products as requiring cart action
                         if ($any_action_cnt >= $vtmin_rules_set[$i]->anyChoice_max['value']) {
                             $k = $sizeof_inpop_found_list;   
@@ -410,28 +441,7 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
       );       
       $this->vtmin_set_custom_msgs_status ('standardMsg');     //v1.08 
   } 
-  
-  
-  
-   //*************************
-   //v1.09.6 new function 
-   //*************************    
-   public function vtmin_maybe_repeating_groups_error($i) {
-      global $vtmin_setup_options, $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info;
-      
-      if ($vtmin_rules_set[$i]->repeatingGroups <= 0) {
-        return false;
-      }
-      
-      //if remainder > 0 , total is not a required repeating group size
-      if ( ($vtmin_rules_set[$i]->inpop_qty_total % $vtmin_rules_set[$i]->repeatingGroups) > 0) {  //modulus operation, gives only remainder 
-        return true;
-      }
-      
-      return false;
-   }  
-    
-  
+
         
    public function vtmin_table_detail_lines_cntl ($i) {
       global $vtmin_setup_options, $vtmin_cart, $vtmin_rules_set, $vtmin_rule, $vtmin_info;
@@ -598,7 +608,7 @@ TAKE THIS FROM PRO AFTER ALL CHANGES HAVE BEEN DONE!!!!!!!!!!!!
       $message_text .= __('">', 'vtmin');
       $message_text .= __('Error => ', 'vtmin');
       //v1.09.6 begin
-      if ( $this->vtmin_maybe_repeating_groups_error($i) ) {
+      if ($vtmin_rules_set[$i]->repeatingGroups > 0)  {  //v1.09.7
         $message_text .= __('</span>Minimum Purchase/Repeating Groups ', 'vtmin');  //end "color-grp"
       } else {
         $message_text .= __('</span>Minimum Purchase ', 'vtmin');  //end "color-grp"
