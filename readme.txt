@@ -3,7 +3,7 @@ Contributors: vark
 Donate link: http://www.varktech.com/woocommerce/minimum-purchase-for-woocommerce/
 Tags: e-commerce, WooCommerce, shop, store, admin, price, pricing, minimum, purchase, limits, checkout
 Requires at least: 3.3
-Tested up to: 4.2.4
+Tested up to: 4.3
 Stable tag: 1.09.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -18,7 +18,7 @@ The Minimum Purchase plugin for WooCommerce gives you the ability to set up mini
 
 If a purchase in your store fails a minimum purchase rule, an error message appears at the top of the checkout page, identifying the error situation and rule requirements.  The customer must resolve the error, before the purchase can be completed.   
 
-Fully tested with WooCommerce 2.3+ .
+Fully tested with WooCommerce 2.4+ .
 
 
 = Now with Repeating Groups and Custom Messaging! =
